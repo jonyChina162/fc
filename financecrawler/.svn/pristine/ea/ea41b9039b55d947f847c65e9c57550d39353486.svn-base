@@ -1,0 +1,209 @@
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2013/12/16 19:33:52                          */
+/*==============================================================*/
+drop database if exists finance;
+
+create database finance;
+
+use finance;
+
+drop table if exists FinancialReport;
+
+drop table if exists FundFlowHistory;
+
+drop table if exists IndustryReport;
+
+drop table if exists StockNews;
+
+drop table if exists StockReport;
+
+drop table if exists TransactionHistory;
+
+drop table if exists stockIndustry;
+
+drop table if exists stockIndex;
+
+drop table if exists stockIndex;
+
+drop table if exists IndexTransactionHistory
+
+/*==============================================================*/
+/* Table: FinancialReport                                       */
+/*==============================================================*/
+create table FinancialReport
+(
+   stockID              char(6) not null,
+   date                 date not null,
+   income               int ,
+   cost                 int ,
+   operProfit           int ,
+   profitAmount         int ,
+   incomeTax            int ,
+   netProfit            int ,
+   EPS                  float ,
+   monCap               int ,
+   currentAsset         int ,
+   fixAsset             int ,
+   totalAsset           int ,
+   currentLiab          int ,
+   fixLiab              int ,
+   totalLiab            int ,
+   totalEquity          int ,
+   cashBalance          int ,
+   busActFund           int ,
+   investActFund        int ,
+   financeActFund       int ,
+   CashIncrease         int ,
+   finalCashBalance     int ,
+   primary key (date, stockID)
+);
+
+/*==============================================================*/
+/* Table: FundFlowHistory                                       */
+/*==============================================================*/
+create table FundFlowHistory
+(
+   stockID              char(6) not null,
+   date                 date not null,
+   fundIn               mediumint ,
+   fundOut              mediumint ,
+   netIn                mediumint ,
+   mainIn               mediumint ,
+   mainOut              mediumint ,
+   mainNetIn            mediumint ,
+   primary key (stockID, date)
+);
+
+/*==============================================================*/
+/* Table: IndustryReport                                        */
+/*==============================================================*/
+create table IndustryReport
+(
+   industryName         varchar(12) not null,
+   date                 date not null,
+   title             varchar(255) not null,
+   linkURL				varchar(255),
+   grade                tinyint ,
+   gradeChange          tinyint ,
+   orgName              varchar(8) ,
+   orgWeight            tinyint ,
+   primary key (date, industryName, linkURL)
+);
+
+/*==============================================================*/
+/* Table: StockNews                                             */
+/*==============================================================*/
+create table StockNews
+(
+   stockID              char(6) not null,
+   date                 date not null,
+   title                varchar(255) ,
+   linkURL              varchar(255) ,
+   extendNosql          varchar(255) ,
+   tendency             tinyint ,
+   primary key (stockID, date)
+);
+
+/*==============================================================*/
+/* Table: StockReport                                           */
+/*==============================================================*/
+create table StockReport
+(
+   stockID              char(6) not null,
+   date                 date not null,
+   title             varchar(255) not null,
+   linkURL				varchar(255),
+   stockName            varchar(12) ,
+   grade                tinyint ,
+   gradeChange          tinyint ,
+   orgName              varchar(8) ,
+   preIncomeThis        float ,
+   prePEratioThis       float ,
+   preIncomeNext        float ,
+   prePEratioNext       float ,
+   primary key (stockID, date, linkURL)
+);
+
+/*==============================================================*/
+/* Table: TransactionHistory                                    */
+/*==============================================================*/
+create table TransactionHistory
+(
+   stockID              char(6) not null,
+   date                 date not null,
+   stockName           varchar(12) ,
+   cloPrice             float ,
+   highPrice            float ,
+   lowPrice             float ,
+   openPrice            float ,
+   beforeClo            float ,
+   changeAmount         float ,
+   changeRatio          float ,
+   turnoverRate         float ,
+   turnover             bigint ,
+   turnoverAmount       float ,
+   MKTcap               float ,
+   EFAMC                float ,
+   allmfi1              float ,
+   allmfi7              float ,
+   mainmfi1             float ,
+   mainmfi7             float ,
+   rsi                  float ,
+   atr7                 float ,
+   atr14                float ,
+   macd                 float ,
+   trade                int ,
+   primary key (stockID, date)
+);
+
+/*==============================================================*/
+/* Table: stockIndustry                                        */
+/*==============================================================*/
+create table stockIndustry
+(
+   stockID              char(6) not null,
+   industryName         varchar(12) ,
+   stockName            varchar(12) ,
+   region               varchar(8) ,
+   stockType            tinyint ,
+   primary key (stockID)
+);
+
+/*==============================================================*/
+/* Table: stockIndex                                        */
+/*==============================================================*/
+create table stockIndex
+(
+   id              char(6) not null,
+   name            varchar(12) ,
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: IndexTransactionHistory                                    */
+/*==============================================================*/
+create table IndexTransactionHistory
+(
+   stockID              char(6) not null,
+   date                 date not null,
+   name           		varchar(12) ,
+   cloPrice              float ,
+   highPrice            float ,
+   lowPrice             float ,
+   openPrice            float ,
+   beforeClo            float,
+   changeAmount         float ,
+   changeRatio          float ,
+   turnover             bigint ,
+   turnoverAmount       float ,
+   primary key (stockID, date)
+);
+
+create table InstitutionName
+(
+   institutionID        char(9) not null,
+   institutionName      varchar(20) not null
+   primary key (institutionID,institutionName)
+);
+

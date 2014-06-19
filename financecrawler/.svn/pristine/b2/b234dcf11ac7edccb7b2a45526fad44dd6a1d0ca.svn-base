@@ -1,0 +1,244 @@
+package cn.whu.zl.service;
+
+import static cn.whu.zl.util.CrawlerUtil.getRSI12Dummy;
+import static cn.whu.zl.util.CrawlerUtil.getRSI24Dummy;
+import static cn.whu.zl.util.CrawlerUtil.getRSI6Dummy;
+import static cn.whu.zl.util.CrawlerUtil.getMFIDummy;
+import static cn.whu.zl.util.CrawlerUtil.getMFIMainDummy;
+import static cn.whu.zl.util.FormulaUtil.CalATR;
+import static cn.whu.zl.util.FormulaUtil.CalIfTrade;
+import static cn.whu.zl.util.FormulaUtil.CalMACD;
+import static cn.whu.zl.util.FormulaUtil.CalRSI;
+import static cn.whu.zl.util.FormulaUtil.CalTrade;
+import static cn.whu.zl.util.FormulaUtil.CalMFI;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.whu.zl.dao.FundFlowHistoryDao;
+import cn.whu.zl.dao.IndexTransactionHistoryDao;
+import cn.whu.zl.dao.TransactionHistoryDao;
+import cn.whu.zl.entity.FundFlowHistory;
+import cn.whu.zl.entity.TransactionHistory;
+
+@Service("calculateIndicatorSer")
+@Transactional
+@Scope("prototype")
+public class CalculateIndicatorService extends BasicCrawServiceImp {
+
+	private static final Logger log = Logger
+			.getLogger(FinancialReportService.class.getName());
+
+	@Autowired
+	private TransactionHistoryDao transactionHistoryDao;
+
+	@Autowired
+	private IndexTransactionHistoryDao indexTransactionHistoryDao;
+
+	@Autowired
+	private FundFlowHistoryDao fundFlowHistoryDao;
+
+	private List<String> allStock;
+
+	public void start() {
+		log.debug("calculate indicators begin");
+		allStock = getCodeList();
+		calIndicators();
+		log.debug("calculate indicators end");
+	}
+
+	private void calIndicators() {
+		// for(int i = 1200;i < allStock.size();i++){
+		float[] RSI6,RSI12,RSI24,ATR7,ATR14,MACD;
+		int[] trade,iftradeup,iftradedown;
+		for (int i = 0; i < allStock.size(); i++) {
+			log.info("stockID = " + allStock.get(i) + " begin");
+
+			List<TransactionHistory> stockTransaction = transactionHistoryDao
+					.getOneStockAllTranHisList(allStock.get(i));
+			/*
+			 * List<FundFlowHistory> stockFund = fundFlowHistoryDao
+			 * .getOneStockAllFund(allStock.get(i));
+			 */
+
+			// List<TransactionHistory> stockTransaction = transactionHistoryDao
+			// .getOneStockAllTranHisList("000001");
+
+			// List<FundFlowHistory> stockFund = fundFlowHistoryDao
+			// .getOneStockAllFund("000001");
+
+			/*
+			 * log.info("mfi begin"); float[] allmfi1 = CalMFI(stockFund, "all",
+			 * 1); float[] allmfi7 = CalMFI(stockFund, "all", 7); float[]
+			 * mainmfi1 = CalMFI(stockFund, "main", 1); float[] mainmfi7 =
+			 * CalMFI(stockFund, "main", 7); log.info("mfi end");
+			 * 
+			 * log.info("mfi save"); for(int m = 0;m < stockFund.size();m++){
+			 * stockFund.get(m).setAllMFI1(allmfi1[m]);
+			 * stockFund.get(m).setAllMFI7(allmfi7[m]);
+			 * stockFund.get(m).setMainMFI1(mainmfi1[m]);
+			 * stockFund.get(m).setMainMFI7(mainmfi7[m]);
+			 * fundFlowHistoryDao.update(stockFund.get(m)); }
+			 * fundFlowHistoryDao.flush(); log.info("mfi saved");
+			 */
+
+			log.debug("rsi begin");
+			RSI6 = CalRSI(stockTransaction, 6);
+			RSI12 = CalRSI(stockTransaction, 12);
+			RSI24 = CalRSI(stockTransaction, 24);
+			log.debug("atr begin");
+			ATR7 = CalATR(stockTransaction, 7);
+			ATR14 = CalATR(stockTransaction, 14);
+			log.debug("macd  begin");
+			MACD = CalMACD(stockTransaction);
+			log.debug("trade  begin");
+			trade = CalTrade(MACD);
+			iftradeup = CalIfTrade(trade, 1);
+			iftradedown = CalIfTrade(trade, -1);
+
+			log.info("st save");
+			for (int n = 0; n < stockTransaction.size(); n++) {
+
+				transactionHistoryDao.updateIndicator(RSI6[n], RSI12[n],
+						RSI24[n], ATR7[n], ATR14[n], MACD[n], trade[n],
+						iftradeup[n], iftradedown[n], stockTransaction.get(n)
+								.getSdPK());
+				/*
+				 * stockTransaction.get(n).setRSI(RSI[n]);
+				 * stockTransaction.get(n).setATR7(ATR7[n]);
+				 * stockTransaction.get(n).setATR14(ATR14[n]);
+				 * stockTransaction.get(n).setMACD(MACD[n]);
+				 * stockTransaction.get(n).setTrade(trade[n]);
+				 * transactionHistoryDao.update(stockTransaction.get(n));
+				 */
+			}
+			transactionHistoryDao.flush();
+			log.info("st saved");
+
+		}
+
+	}
+
+	private void calMFI() {
+		for (int i = 0; i < allStock.size(); i++) {
+			log.info("stockID = " + allStock.get(i) + " MFI begin");
+			List<FundFlowHistory> stockFund = fundFlowHistoryDao
+					.getOneStockAllFund(allStock.get(i));
+
+			log.info("mfi begin");
+			float[] allmfi1 = CalMFI(stockFund, "all", 1);
+			float[] allmfi7 = CalMFI(stockFund, "all", 7);
+			float[] mainmfi1 = CalMFI(stockFund, "main", 1);
+			float[] mainmfi7 = CalMFI(stockFund, "main", 7);
+			log.info("mfi end");
+
+			log.info("mfi save");
+			for (int m = 0; m < stockFund.size(); m++) {
+				stockFund.get(m).setAllMFI1(allmfi1[m]);
+				stockFund.get(m).setAllMFI7(allmfi7[m]);
+				stockFund.get(m).setMainMFI1(mainmfi1[m]);
+				stockFund.get(m).setMainMFI7(mainmfi7[m]);
+				fundFlowHistoryDao.update(stockFund.get(m));
+			}
+			fundFlowHistoryDao.flush();
+			log.info("mfi saved");
+
+		}
+	}
+
+	private void calMFIDummy(String a, String b) throws Exception {
+		Calendar start = Calendar.getInstance();
+		start.setTime(sdf.parse(a));
+		Calendar end = Calendar.getInstance();
+		end.setTime(sdf.parse(b));
+		for (Calendar i = start; i.before(end); i.add(Calendar.DATE, 1)) {
+			log.info("cal " + sdf.format(i.getTime()) + " mfi dummy begin");
+			List<FundFlowHistory> list = fundFlowHistoryDao.getAllByDate(i
+					.getTime());
+
+			log.info("total num of this day : " + list.size());
+
+			float[] avgMFI = calAvgMFI(list);
+
+			for (FundFlowHistory th : list) {
+				th.setAllMFI1dummy(getMFIDummy(avgMFI[0], th.getMainMFI1()));
+				th.setAllMFI7dummy(getMFIDummy(avgMFI[1], th.getMainMFI7()));
+				th.setAllMFI14dummy(getMFIDummy(avgMFI[2], th.getMainMFI14()));
+				th.setMainMFI1dummy(getMFIMainDummy(avgMFI[3], th.getMainMFI1()));
+				th.setMainMFI7dummy(getMFIMainDummy(avgMFI[4], th.getMainMFI7()));
+				th.setMainMFI14dummy(getMFIMainDummy(avgMFI[5], th.getMainMFI14()));
+				fundFlowHistoryDao.update(th);
+			}
+		}
+	}
+
+	private void calRSIDummy(String a, String b) throws Exception {
+		Calendar start = Calendar.getInstance();
+		start.setTime(sdf.parse(a));
+		Calendar end = Calendar.getInstance();
+		end.setTime(sdf.parse(b));
+		for (Calendar i = start; i.before(end); i.add(Calendar.DATE, 1)) {
+			log.info("cal " + sdf.format(i.getTime()) + " rsi dummy begin");
+			List<TransactionHistory> list = transactionHistoryDao
+					.getAllByDate(i.getTime());
+
+			log.info("total num of this day : " + list.size());
+
+			float[] avgRSI = calAvgRSI(list);
+
+			for (TransactionHistory th : list) {
+				th.setRSI6dummy(getRSI6Dummy(avgRSI[0], th.getRSI6()));
+				th.setRSI12dummy(getRSI12Dummy(avgRSI[0], th.getRSI12()));
+				th.setRSI24dummy(getRSI24Dummy(avgRSI[0], th.getRSI24()));
+				transactionHistoryDao.update(th);
+			}
+		}
+
+	}
+
+	private float[] calAvgRSI(List<TransactionHistory> list) {
+		float[] rsi = new float[3];
+		int len = list.size();
+
+		for (TransactionHistory th : list) {
+			rsi[0] += th.getRSI6();
+			rsi[1] += th.getRSI12();
+			rsi[2] += th.getRSI24();
+		}
+
+		for (@SuppressWarnings("unused")
+		float f : rsi)
+			f /= len;
+
+		return rsi;
+	}
+	
+	private float[] calAvgMFI(List<FundFlowHistory> list) {
+		float[] mfi = new float[6];
+		int len = list.size();
+
+		for (FundFlowHistory fh : list) {
+			mfi[0] += fh.getAllMFI1();
+			mfi[1] += fh.getAllMFI7();
+			mfi[2] += fh.getAllMFI14();
+			mfi[3] += fh.getMainMFI1();
+			mfi[4] += fh.getMainMFI7();
+			mfi[5] += fh.getMainMFI14();
+		}
+
+		for (@SuppressWarnings("unused")
+		float f : mfi)
+			f /= len;
+
+		return mfi;
+	}
+
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+}

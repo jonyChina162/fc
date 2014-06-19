@@ -1,0 +1,240 @@
+/**
+ * 
+ */
+package cn.whu.zl.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Entity
+@Table(name="jrjstockreport")
+public class JrjStockReport implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String toString() {
+		return "JrjStockReport [sdtPK=" + sdtPK + ", stockName=" + stockName
+				+ ", grade=" + grade + ", gradeChange=" + gradeChange
+				+ ", orgName=" + orgName + ", industry=" + industry
+				+ ", tarRatio=" + tarRatio + ", preIncomeThis=" + preIncomeThis
+				+ ", curPrice=" + curPrice + ", tarPrice=" + tarPrice
+				+ ", prePEratioThis=" + prePEratioThis + ", orgID=" + orgID
+				+ ", title=" + title + ", orgReportNum=" + orgReportNum
+				+ ", reportDate=" + reportDate + ", visits=" + visits + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sdtPK == null) ? 0 : sdtPK.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JrjStockReport other = (JrjStockReport) obj;
+		if (sdtPK == null) {
+			if (other.sdtPK != null)
+				return false;
+		} else if (!sdtPK.equals(other.sdtPK))
+			return false;
+		return true;
+	}
+
+	public StockDataTitlePK getSdtPK() {
+		return sdtPK;
+	}
+
+	public void setSdtPK(StockDataTitlePK sdtPK) {
+		this.sdtPK = sdtPK;
+	}
+
+	public String getStockName() {
+		return stockName;
+	}
+
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
+	}
+
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public String getGradeChange() {
+		return gradeChange;
+	}
+
+	public void setGradeChange(String gradeChange) {
+		this.gradeChange = gradeChange;
+	}
+
+	public float getTarRatio() {
+		return tarRatio;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public float getPreIncomeThis() {
+		return preIncomeThis;
+	}
+
+	public void setPreIncomeThis(float preIncomeThis) {
+		this.preIncomeThis = preIncomeThis;
+	}
+
+	public float getPrePEratioThis() {
+		return prePEratioThis;
+	}
+
+	public void setPrePEratioThis(float prePEratioThis) {
+		this.prePEratioThis = prePEratioThis;
+	}
+
+	
+	
+	public String getIndustry() {
+		return industry;
+	}
+
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+
+	public float getCurPrice() {
+		return curPrice;
+	}
+
+	public void setCurPrice(float curPrice) {
+		this.curPrice = curPrice;
+	}
+
+	public float getTarPrice() {
+		return tarPrice;
+	}
+
+	public void setTarPrice(float tarPrice) {
+		this.tarPrice = tarPrice;
+	}
+	
+	public void setTarRatio(float tarRatio) {
+		this.tarRatio = tarRatio;
+	}
+	
+	public Date getReportDate(){
+		return reportDate;
+	}
+	
+	public void setReportDate(Date reportDate){
+		this.reportDate = reportDate;
+	}
+	
+	public int getVisits(){
+		return visits;
+	}
+	
+	public void setVisits(int visits){
+		this.visits = visits;
+	}
+
+	@EmbeddedId
+	private StockDataTitlePK sdtPK;
+
+	@Column(name = "stockName")
+	private String stockName;
+
+	@Column(name = "grade")
+	private String grade;
+
+	@Column(name = "gradeChange")
+	private String gradeChange;
+
+	@Column(name = "orgName")
+	private String orgName;
+	
+	@Column(name = "industry")
+	private String industry;
+	
+	@Column(name = "tarRatio", scale = 2)
+	private float tarRatio;
+
+	@Column(name = "preIncomeThis", scale = 2)
+	private float preIncomeThis;
+	
+	@Column(name = "curPrice", scale = 2)
+	private float curPrice;
+
+	@Column(name = "tarPrice", scale = 2)
+	private float tarPrice;
+
+	@Column(name = "prePEratioThis", scale = 2)
+	private float prePEratioThis;
+
+	@Column(name = "orgID")
+	private String orgID;
+
+	@Column(name = "title")
+	private String title;
+	
+	@Column(name = "orgReportNum")
+	private int orgReportNum;
+	
+	@Column(name = "reportDate")
+	private Date reportDate;
+	
+	@Column(name = "visits")
+	private int visits;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public int getOrgReportNum() {
+		return orgReportNum;
+	}
+
+	public void setOrgReportNum(int orgReportNum) {
+		this.orgReportNum = orgReportNum;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getOrgID() {
+		return orgID;
+	}
+
+	public void setOrgID(String orgID) {
+		this.orgID = orgID;
+	}
+	
+	
+}

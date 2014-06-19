@@ -1,0 +1,92 @@
+package cn.whu.zl.hbase.model;
+
+import static cn.whu.zl.util.MD5Util.str2MD516;
+
+
+public class HbIndusReports {
+
+	public String time;
+	public int grade;
+	public int graChange;
+	public int orgImpact;
+	public String url;
+	public String orgName;
+	public String indusName;
+	public String priceCR;
+	public String reContent;
+	public long reportsCount;
+	private String key;
+	public String title;
+	
+	
+	
+	public HbIndusReports() {
+	}
+
+	
+
+	public HbIndusReports(String key) {
+		this();
+		String[] ss = key.split("_");
+		time = ss[0];
+		grade = Integer.parseInt(ss[1]);
+		graChange = Integer.parseInt(ss[2]);
+		orgImpact = Integer.parseInt(ss[3]);
+		url = ss[4];
+	}
+
+
+
+	public HbIndusReports(String time, int grade, int graChange, int orgImpact,
+			String url) {
+		super();
+		this.time = time;
+		this.grade = grade;
+		this.graChange = graChange;
+		this.orgImpact = orgImpact;
+		this.url = url;
+	}
+
+
+
+	public HbIndusReports(String time, int grade, int graChange, int orgImpact,
+			String url, String orgName, String indusName, String priceCR,
+			String reContent, long reportsCount) {
+		super();
+		this.time = time;
+		this.grade = grade;
+		this.graChange = graChange;
+		this.orgImpact = orgImpact;
+		this.url = url;
+		this.orgName = orgName;
+		this.indusName = indusName;
+		this.priceCR = priceCR;
+		this.reContent = reContent;
+		this.reportsCount = reportsCount;
+	}
+
+	public String getKey() {
+		if (key == null || key.length() != 37) {
+			StringBuilder sb = new StringBuilder(37);
+			sb.append(time).append("_").append(grade).append("_")
+					.append(graChange).append("_").append(orgImpact)
+					.append("_");
+			sb.append(str2MD516(url));
+			key = sb.toString();
+		}
+		return key;
+	}
+	
+	public void setKey(String key){
+		this.key = key;
+	}
+
+	@Override
+	public String toString() {
+		return "IndusReports [time=" + time + ", grade=" + grade
+				+ ", graChange=" + graChange + ", orgImpact=" + orgImpact
+				+ ", url=" + url + ", orgName=" + orgName + ", indusName="
+				+ indusName + ", priceCR=" + priceCR + ", reContent="
+				+ reContent + ", reportsCount=" + reportsCount + "]";
+	}
+}

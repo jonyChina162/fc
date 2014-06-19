@@ -1,0 +1,308 @@
+/**
+ * 
+ */
+package cn.whu.zl.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+/**
+ * @author B506-13-1
+ *
+ */
+@Entity
+@Table(name="financialreport")
+public class FinancialReport implements Serializable{
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String toString() {
+		return "FinancialReport [sdPK=" + sdPK + ", income=" + income
+				+ ", cost=" + cost + ", operProfit=" + operProfit
+				+ ", profitAmount=" + profitAmount + ", incomeTax=" + incomeTax
+				+ ", netProfit=" + netProfit + ", EPS=" + EPS + ", monCap="
+				+ monCap + ", currentAsset=" + currentAsset + ", fixAsset="
+				+ fixAsset + ", totalAsset=" + totalAsset + ", currentLiab="
+				+ currentLiab + ", fixLiab=" + fixLiab + ", totalLiab="
+				+ totalLiab + ", totalEquity=" + totalEquity + ", cashBalance="
+				+ cashBalance + ", busActFund=" + busActFund
+				+ ", investActFund=" + investActFund + ", financeActFund="
+				+ financeActFund + ", cashIncrease=" + cashIncrease
+				+ ", finalCashBalance=" + finalCashBalance + "]";
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sdPK == null) ? 0 : sdPK.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FinancialReport other = (FinancialReport) obj;
+		if (sdPK == null) {
+			if (other.sdPK != null)
+				return false;
+		} else if (!sdPK.equals(other.sdPK))
+			return false;
+		return true;
+	}
+
+	public StockDataPK getSdPK() {
+		return sdPK;
+	}
+
+	public void setSdPK(StockDataPK sdPK) {
+		this.sdPK = sdPK;
+	}
+
+	public int getIncome() {
+		return income;
+	}
+
+	public void setIncome(int income) {
+		this.income = income;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	public int getOperProfit() {
+		return operProfit;
+	}
+
+	public void setOperProfit(int operProfit) {
+		this.operProfit = operProfit;
+	}
+
+	public int getProfitAmount() {
+		return profitAmount;
+	}
+
+	public void setProfitAmount(int profitAmount) {
+		this.profitAmount = profitAmount;
+	}
+
+	public int getIncomeTax() {
+		return incomeTax;
+	}
+
+	public void setIncomeTax(int incomeTax) {
+		this.incomeTax = incomeTax;
+	}
+
+	public int getNetProfit() {
+		return netProfit;
+	}
+
+	public void setNetProfit(int netProfit) {
+		this.netProfit = netProfit;
+	}
+
+	public float getEPS() {
+		return EPS;
+	}
+
+	public void setEPS(float ePS) {
+		EPS = ePS;
+	}
+
+	public int getMonCap() {
+		return monCap;
+	}
+
+	public void setMonCap(int monCap) {
+		this.monCap = monCap;
+	}
+
+	public int getCurrentAsset() {
+		return currentAsset;
+	}
+
+	public void setCurrentAsset(int currentAsset) {
+		this.currentAsset = currentAsset;
+	}
+
+	public int getFixAsset() {
+		return fixAsset;
+	}
+
+	public void setFixAsset(int fixAsset) {
+		this.fixAsset = fixAsset;
+	}
+
+	public int getTotalAsset() {
+		return totalAsset;
+	}
+
+	public void setTotalAsset(int totalAsset) {
+		this.totalAsset = totalAsset;
+	}
+
+	public int getCurrentLiab() {
+		return currentLiab;
+	}
+
+	public void setCurrentLiab(int currentLiab) {
+		this.currentLiab = currentLiab;
+	}
+
+	public int getFixLiab() {
+		return fixLiab;
+	}
+
+	public void setFixLiab(int fixLiab) {
+		this.fixLiab = fixLiab;
+	}
+
+	public int getTotalLiab() {
+		return totalLiab;
+	}
+
+	public void setTotalLiab(int totalLiab) {
+		this.totalLiab = totalLiab;
+	}
+
+	public int getTotalEquity() {
+		return totalEquity;
+	}
+
+	public void setTotalEquity(int totalEquity) {
+		this.totalEquity = totalEquity;
+	}
+
+	public int getCashBalance() {
+		return cashBalance;
+	}
+
+	public void setCashBalance(int cashBalance) {
+		this.cashBalance = cashBalance;
+	}
+
+	public int getBusActFund() {
+		return busActFund;
+	}
+
+	public void setBusActFund(int busActFund) {
+		this.busActFund = busActFund;
+	}
+
+	public int getInvestActFund() {
+		return investActFund;
+	}
+
+	public void setInvestActFund(int investActFund) {
+		this.investActFund = investActFund;
+	}
+
+	public int getFinanceActFund() {
+		return financeActFund;
+	}
+
+	public void setFinanceActFund(int financeActFund) {
+		this.financeActFund = financeActFund;
+	}
+
+	public int getCashIncrease() {
+		return cashIncrease;
+	}
+
+	public void setCashIncrease(int cashIncrease) {
+		this.cashIncrease = cashIncrease;
+	}
+
+	public int getFinalCashBalance() {
+		return finalCashBalance;
+	}
+
+	public void setFinalCashBalance(int finalCashBalance) {
+		this.finalCashBalance = finalCashBalance;
+	}
+
+
+
+
+	@EmbeddedId
+	private StockDataPK sdPK;
+	
+	@Column(name="income")
+	private int income;
+	
+	@Column(name="cost")
+	private int cost;
+	
+	@Column(name="operProfit")
+	private int operProfit;
+	
+	@Column(name="profitAmount")
+	private int profitAmount;
+	
+	@Column(name="incomeTax")
+	private int incomeTax;
+	
+	@Column(name="netProfit")
+	private int netProfit;
+	
+	@Column(name="EPS",scale=2)
+	private float EPS;
+	
+	@Column(name="monCap")
+	private int monCap;
+	
+	@Column(name="currentAsset")
+	private int currentAsset;
+	
+	@Column(name="fixAsset")
+	private int fixAsset;
+	
+	@Column(name="totalAsset")
+	private int totalAsset;
+	
+	@Column(name="currentLiab")
+	private int currentLiab;
+	
+	@Column(name="fixLiab")
+	private int fixLiab;
+	
+	@Column(name="totalLiab")
+	private int totalLiab;
+	
+	@Column(name="totalEquity")
+	private int totalEquity;
+	
+	@Column(name="cashBalance")
+	private int cashBalance;
+	
+	@Column(name="busActFund")
+	private int busActFund;
+	
+	@Column(name="investActFund")
+	private int investActFund;
+	
+	@Column(name="financeActFund")
+	private int financeActFund;
+	
+	@Column(name="CashIncrease")
+	private int cashIncrease;
+	
+	@Column(name="finalCashBalance")
+	private int finalCashBalance;
+	
+}

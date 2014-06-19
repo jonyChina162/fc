@@ -1,0 +1,235 @@
+package cn.whu.zl.hbase.dao;
+
+import static cn.whu.zl.util.MD5Util.str2MD516;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.apache.hadoop.hbase.client.Delete;
+import org.apache.hadoop.hbase.client.Get;
+import org.apache.hadoop.hbase.client.HTableInterface;
+import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.log4j.Logger;
+
+import cn.whu.zl.hbase.model.HbIndusReports;
+import cn.whu.zl.hbase.model.HbReports;
+
+public class ReportDAO {
+	
+	public static final byte[] TABLE_NAME = Bytes.toBytes("rps");
+	public static final byte[] INFO_FAM = Bytes.toBytes("if");
+	public static final byte[] CONTENT_FAM = Bytes.toBytes("ct");
+	public static final byte[] IDICATOR_FAM = Bytes.toBytes("idc");
+
+	public static final byte[] ORGNAME_COL = Bytes.toBytes("oname");
+	public static final byte[] STOCKID_COL = Bytes.toBytes("sid");
+	public static final byte[] STOCKNAME_COL = Bytes.toBytes("sname");
+	public static final byte[] CONTENT_COL = Bytes.toBytes("rc");
+	public static final byte[] NUM_COL = Bytes.toBytes("num");
+	public static final byte[] PROFITTHIS_COL = Bytes.toBytes("prot");
+	public static final byte[] RATIOTHIS_COL = Bytes.toBytes("ratiot");
+	public static final byte[] PROFITNEXT_COL = Bytes.toBytes("pront");
+	public static final byte[] RATIONEXT_COL = Bytes.toBytes("rationt");
+	public static final byte[] TITLE_COL = Bytes.toBytes("title");
+
+	private static final Logger log = Logger.getLogger(ReportDAO.class);
+
+	private HTablePool pool;
+	private HTableInterface t;
+
+	public ReportDAO(HTablePool pool) {
+		this.pool = pool;
+		this.t = pool.getTable(TABLE_NAME);
+	}
+	
+	public void close() throws IOException{
+		t.close();
+	}
+	
+	public List<HbReports> scanByNTime(String time,int N) throws Exception {
+		Scan s = new Scan();
+		s.addFamily(INFO_FAM);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(time));
+		c.add(Calendar.DAY_OF_YEAR, -1 * N);
+		String begin = sdf.format(c.getTime());
+		c.add(Calendar.DAY_OF_YEAR, N + 1);
+		String end = sdf.format(c.getTime());
+		s.setStartRow(Bytes.toBytes(begin));
+		s.setStopRow(Bytes.toBytes(end));
+		ResultScanner rs = t.getScanner(s);
+		List<HbReports> list = new ArrayList<HbReports>();
+		for (Result r : rs) {
+			String key = Bytes.toString(r.getRow());
+			String[] keyTmp = key.split("_");
+			HbReports hbr = new HbReports();
+			hbr.time = keyTmp[0];
+			hbr.grade = Integer.parseInt(keyTmp[1]);
+			hbr.graChange = Integer.parseInt(keyTmp[2]);
+			hbr.orgImpact = Integer.parseInt(keyTmp[3]);
+			hbr.url = keyTmp[4];
+			
+			hbr.stockID = Bytes.toString(r.getValue(INFO_FAM, STOCKID_COL)).trim();
+			hbr.stockName  = Bytes.toString(r.getValue(INFO_FAM, STOCKNAME_COL)).trim();
+//			hbr.profitThis = Float.parseFloat(Bytes.toString(r.getValue(INFO_FAM, PROFITTHIS_COL)));
+//			hbr.profitNext = Float.parseFloat(Bytes.toString(r.getValue(INFO_FAM, PROFITNEXT_COL)));
+//			hbr.ratioThis = Float.parseFloat(Bytes.toString(r.getValue(INFO_FAM, RATIOTHIS_COL)));
+//			hbr.ratioNext = Float.parseFloat(Bytes.toString(r.getValue(INFO_FAM, RATIONEXT_COL)));
+			hbr.orgName = Bytes.toString(r.getValue(INFO_FAM, ORGNAME_COL));
+			hbr.title = Bytes.toString(r.getValue(INFO_FAM, TITLE_COL));
+			list.add(hbr);
+		}
+		return list;
+	}
+
+	private static Get mkGet(String id) throws IOException {
+		log.debug(String.format("Creating Get for %s", id));
+
+		Get g = new Get(Bytes.toBytes(id));
+
+		return g;
+	}
+
+	private static Put mkPut(HbReports re) {
+		log.debug(String.format("Creating Put for %s", re));
+
+		StringBuilder sb = new StringBuilder(37);
+		sb.append(re.time).append("_").append(re.grade).append("_")
+				.append(re.graChange).append("_").append(re.orgImpact)
+				.append("_");
+		sb.append(str2MD516(re.url));
+		
+		String key = sb.toString();
+		
+		re.setKey(key);
+
+		Put p = new Put(Bytes.toBytes(key));
+		p.add(INFO_FAM, STOCKID_COL, Bytes.toBytes(re.stockID));
+		p.add(INFO_FAM, ORGNAME_COL, Bytes.toBytes(re.orgName));
+		p.add(INFO_FAM, STOCKNAME_COL, Bytes.toBytes(re.stockName));
+		p.add(INFO_FAM, PROFITTHIS_COL, Bytes.toBytes(re.profitThis));
+		p.add(INFO_FAM, RATIOTHIS_COL, Bytes.toBytes(re.ratioThis));
+		p.add(INFO_FAM, PROFITNEXT_COL, Bytes.toBytes(re.profitNext));
+		p.add(INFO_FAM, RATIONEXT_COL, Bytes.toBytes(re.ratioNext));
+		p.add(INFO_FAM, TITLE_COL, Bytes.toBytes(re.title));
+		
+		p.add(CONTENT_FAM, CONTENT_COL, Bytes.toBytes(re.reContent));
+		return p;
+	}
+
+	public static Put mkPut(String time, int grade, int graChange, int orgImpact,
+			String url, String fam, String qual, String val) {
+		StringBuilder sb = new StringBuilder(37);
+		sb.append(time).append("_").append(grade).append("_").append(graChange)
+				.append("_").append(orgImpact).append("_");
+		sb.append(str2MD516(url));
+		return mkPut(sb.toString(), Bytes.toBytes(fam), Bytes.toBytes(qual), Bytes.toBytes(val));
+	}
+
+	public static Put mkPut(String key, byte[] fam, byte[] qual, byte[] val) {
+		Put p = new Put(Bytes.toBytes(key));
+		p.add(fam, qual, val);
+		return p;
+	}
+
+	private static Delete mkDel(String ir) {
+		log.debug(String.format("Creating Delete for %s", ir));
+
+		Delete d = new Delete(Bytes.toBytes(ir));
+		return d;
+	}
+
+	private static Scan mkScan() {
+		Scan s = new Scan();
+		return s;
+	}
+	
+	private static Scan infoScan(){
+		Scan s = new Scan();
+		s.addFamily(INFO_FAM);
+		return s;
+	}
+
+	public void add(String time, int grade, int graChange, int orgImpact,
+			String url, byte[] fam, byte[] qual, byte[] val)
+			throws IOException {
+
+		StringBuilder sb = new StringBuilder(37);
+		sb.append(time).append("_").append(grade).append("_").append(graChange)
+				.append("_").append(orgImpact).append("_");
+		sb.append(str2MD516(url));
+
+		String key = sb.toString();
+		Put p = mkPut(key, fam, qual, val);
+		t.put(p);
+		incReportsCount(key);
+	}
+	
+	public void add(HbReports re) throws Exception{
+		Put p = mkPut(re);
+		t.put(p);
+		incReportsCount(re.getKey());
+	}
+	
+
+	public HbIndusReports get(String key)
+			throws IOException {
+
+		Get g = mkGet(key);
+		Result result = t.get(g);
+		if (result.isEmpty()) {
+			log.info(String.format("indusReport %s not found.", key));
+			return null;
+		}
+
+		HbIndusReports irs = new HbIndusReports(key) ;
+		return irs;
+	}
+
+	public void delete(String key) throws IOException {
+		Delete d = mkDel(key);
+		t.delete(d);
+	}
+
+	public List<HbReports> getAll()
+			throws IOException {
+		ResultScanner results = t.getScanner(mkScan());
+		ArrayList<HbReports> ret = new ArrayList<HbReports>();
+		//TODO
+		for (Result r : results) {
+			ret.add(null);
+		}
+
+		return ret;
+	}
+	
+	public List<HbReports> getInfoList()
+			throws IOException {
+		ResultScanner results = t.getScanner(infoScan());
+		ArrayList<HbReports> ret = new ArrayList<HbReports>();
+		//TODO
+		for (Result r : results) {
+			ret.add(null);
+		}
+
+		return ret;
+	}
+
+	public long incReportsCount(String key) throws IOException {
+
+		long ret = t.incrementColumnValue(Bytes.toBytes(key), INFO_FAM,
+				NUM_COL, 1L);
+
+		return ret;
+	}
+}
+	

@@ -1,0 +1,295 @@
+/**
+ * 本类需做多线程处理，需要完成能够同时爬取并且同时进行数据库读写并行运算
+ * 只利用一般的事务，内存会被缓存的sql语句爆掉
+ * 
+ * 这段代码中内存会泄露
+ */
+package cn.whu.zl.service;
+
+import static cn.whu.zl.util.CrawlerUtil.GBK;
+import static cn.whu.zl.util.CrawlerUtil.strToFloat;
+import static cn.whu.zl.util.CrawlerUtil.strToLong;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.whu.zl.dao.StockIndustryDao;
+import cn.whu.zl.dao.TransactionHistoryDao;
+import cn.whu.zl.entity.StockDataPK;
+import cn.whu.zl.entity.StockIndustry;
+import cn.whu.zl.entity.TransactionHistory;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Transactional
+@Service("transactionHistorySer")
+@Scope("prototype")
+public class TransactionHistoryService extends BasicCrawServiceImp {
+
+	private static final Logger log = Logger
+			.getLogger(TransactionHistoryService.class.getName());
+
+	public TransactionHistoryService() {
+		this("20140111", new SimpleDateFormat("yyyyMMdd").format(new Date()));
+	}
+
+	public TransactionHistoryService(String start, String end) {
+		log.debug("transactionHistroyService initialization begin");
+		
+
+		setSeed("http://quotes.money.163.com/service/chddata.html");
+		try {
+			uriBuilder = new URIBuilder(seed);
+		} catch (URISyntaxException uso) {
+			log.error("Fatal error : " + uso);
+			Runtime.getRuntime().exit(-1);
+		}
+		uriBuilder
+				.setParameter("code", "1000001")
+				.setParameter("start", start)
+				.setParameter("end", end)
+				.setParameter(
+						"fields",
+						"TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+
+		initiaHttpClient();
+
+		log.debug("transactionHistroyService initialization end");
+	}
+
+	@Override
+	public void start() {
+		
+		crawFromDownload();
+
+	}
+
+	@Override
+	public void run() {
+		crawFromDownload();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see cn.whu.zl.service.CrawService#close()
+	 */
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	public List<TransactionHistory> getAllList(int recordNo,int pageSize){
+		return transanctionHistoryDao.getAllList(recordNo, pageSize);
+	}
+	
+	public Long getTotalRecords(){
+		return transanctionHistoryDao.getSizes();
+	}
+
+	private void crawFromDownload() {
+		log.warn("craw " + getMinCode() + " To " + getMaxCode()
+				+ " Transaction History begin");
+
+		// int count = 0;
+		// crawFromDownload("1000403", GBK);
+		for (String code : getCodeList()) {
+			
+				try {
+					crawFromDownload(code, GBK);
+				} catch (ClientProtocolException cpe) {
+					log.error(code + " th record failed!");
+					log.error("Fatal protocol violation : " + cpe);
+				} catch (ParseException pe) {
+					log.error(code + " th record failed!");
+					log.error("Fatal Parse Error : " + pe);
+				} catch (IOException ioe) {
+					log.error(code + " th record failed!");
+					log.error("Fatal io error : " + ioe);
+				} catch (Exception e) {
+					log.error(code + " th record failed!");
+					log.error("Fatal transport error: " + e);
+				}
+
+			// if (++count == 10) {
+			// log.warn("time to writing into db");
+			// transanctionHistoryDao.flush();
+			// count = 0;
+			// }
+
+		}
+		log.warn("craw " + getMinCode() + " To " + getMaxCode()
+				+ " Transaction History end");
+	}
+
+	private void crawFromDownload(String code, String charSet)
+			throws ParseException, Exception {
+
+		log.warn("craw " + code + " Transaction History begin");
+		if(code.compareTo(THRESHOLD_CODE)<0)
+			code = "1" + code;
+		else
+			code = "0" + code;
+		HttpGet httpGet = null;
+		BufferedReader reader = null;
+		try {
+			uriBuilder.setParameter("code", code);
+			httpGet = new HttpGet(uriBuilder.build());
+			HttpResponse response = client.execute(httpGet);
+
+			StatusLine statusLine = response.getStatusLine();
+
+			int reTry = 0;
+			while (statusLine.getStatusCode() != HttpStatus.SC_OK) {
+				reTry++;
+				
+				if (reTry == 10) {
+					log.error("Request failed : " + statusLine);
+					throw new ClientProtocolException(statusLine.toString());
+				}
+				httpGet.releaseConnection();
+				response = client.execute(httpGet);
+				statusLine = response.getStatusLine();
+				
+			}
+			HttpEntity entity = response.getEntity();
+			reader = new BufferedReader(new InputStreamReader(
+					entity.getContent(), charSet));
+
+			String tmp = reader.readLine();
+			int count = 0;
+
+			List<TransactionHistory> ths = new ArrayList<>();
+			tmp = reader.readLine();
+			while ((tmp = reader.readLine()) != null) {
+				/*
+				 * if (code.equals("1000403")) log.error(tmp);
+				 */
+				log.debug(tmp);
+				ths.add(strToTH(tmp));
+				count++;
+			}
+			
+
+			// synchronized (this) {
+			// saveListToDB(ths);
+			// }
+			if (count > 0)
+				saveListToDB(ths);
+
+			System.gc();
+
+			log.warn("The number of records write to DB is : " + count);
+			EntityUtils.consume(entity);
+			reader.close();
+
+		} catch (ClientProtocolException cpe) {
+			throw cpe;
+		} catch (IOException ioe) {
+			throw ioe;
+		} finally {
+			if (null != httpGet)
+				httpGet.releaseConnection();
+			if (null != reader)
+				reader = null;
+		}
+	}
+
+	private TransactionHistory strToTH(String str) throws ParseException {
+		String[] values = str.split(",");
+		TransactionHistory th = new TransactionHistory.Builder(new StockDataPK(
+				new String(values[1]).substring(new String(values[1])
+						.indexOf("'") + 1), (Date) new SimpleDateFormat(
+						"yyyy-MM-dd").parse(values[0])))
+				.stockName(new String(values[2]))
+				.cloPrice(strToFloat(values[3]))
+				.highPrice(strToFloat(values[4]))
+				.lowPrice(strToFloat(values[5]))
+				.openPrice(strToFloat(values[6]))
+				.beforeClo(strToFloat(values[7]))
+				.changeAmount(strToFloat(values[8]))
+				.changeRatio(strToFloat(values[9]))
+				.turnoverRate(strToFloat(values[10]))
+				.turnover(strToLong(values[11]))
+				.turnoverAmount(strToFloat(values[12]))
+				.MKTcap(strToFloat(values[13])).EFAMC(strToFloat(values[14]))
+				.build();
+
+		return th;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	private void saveToDB(TransactionHistory th) {
+		transanctionHistoryDao.save(th);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	private void saveListToDB(List<TransactionHistory> ths) {
+		for (TransactionHistory th : ths) {
+			transanctionHistoryDao.save(th);
+			th = null;
+		}
+		// transanctionHistoryDao.flush();
+		ths = null;
+	}
+
+	/*
+	 * private void closeTHEntity(TransactionHistory th) { Method[] methods =
+	 * TransactionHistory.class.getMethods(); for (Method method : methods) { if
+	 * (method.getName().startsWith("set")) { try { if
+	 * (method.getParameterTypes().equals(StockDataPK.class)) method.invoke(th,
+	 * null); if (method.getParameterTypes().equals(float.class))
+	 * method.invoke(th, 0.0F); } catch (IllegalAccessException |
+	 * InvocationTargetException e) {
+	 * 
+	 * } } } }
+	 */
+
+	@Override
+	public List<String> getCodeList() {
+		if (null == codeList || codeList.size() == 0)
+			codeList = stockIndustryDao.getAllStockID();
+		return codeList;
+	}
+
+	@Override
+	public void setCodeList(List<String> codeList) {
+		this.codeList = codeList;
+		setMaxCode(codeList.get(codeList.size() - 1));
+		setMinCode(codeList.get(0));
+	}
+
+	@Autowired
+	private TransactionHistoryDao transanctionHistoryDao;
+
+	@Autowired
+	private StockIndustryDao stockIndustryDao;
+
+	private List<String> codeList = null;
+	private final String THRESHOLD_CODE = "600000";
+}

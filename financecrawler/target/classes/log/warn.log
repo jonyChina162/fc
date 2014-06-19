@@ -1,0 +1,602 @@
+2014-04-29 11:01:28[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.NoRouteToHostException: 没有到主机的路由
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-04-29 11:01:28[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-04-29 11:07:33[org.apache.hadoop.hbase.client.HBaseAdmin] -[WARN] Creating test took too long 
+java.net.SocketTimeoutException: Call to ubuntu00/192.168.1.101:60000 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/192.168.1.101:41849 remote=ubuntu00/192.168.1.101:60000]
+	at org.apache.hadoop.hbase.ipc.HBaseClient.wrapException(HBaseClient.java:949)
+	at org.apache.hadoop.hbase.ipc.HBaseClient.call(HBaseClient.java:922)
+	at org.apache.hadoop.hbase.ipc.WritableRpcEngine$Invoker.invoke(WritableRpcEngine.java:150)
+	at com.sun.proxy.$Proxy5.createTable(Unknown Source)
+	at org.apache.hadoop.hbase.client.HBaseAdmin.createTableAsync(HBaseAdmin.java:453)
+	at org.apache.hadoop.hbase.client.HBaseAdmin.createTable(HBaseAdmin.java:362)
+	at org.apache.hadoop.hbase.client.HBaseAdmin.createTable(HBaseAdmin.java:300)
+	at cn.whu.zl.hbase.HbaseConf.main(HbaseConf.java:38)
+Caused by: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/192.168.1.101:41849 remote=ubuntu00/192.168.1.101:60000]
+	at org.apache.hadoop.net.SocketIOWithTimeout.doIO(SocketIOWithTimeout.java:164)
+	at org.apache.hadoop.net.SocketInputStream.read(SocketInputStream.java:155)
+	at org.apache.hadoop.net.SocketInputStream.read(SocketInputStream.java:128)
+	at java.io.FilterInputStream.read(FilterInputStream.java:133)
+	at org.apache.hadoop.hbase.ipc.HBaseClient$Connection$PingInputStream.read(HBaseClient.java:311)
+	at java.io.BufferedInputStream.fill(BufferedInputStream.java:235)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:254)
+	at java.io.DataInputStream.readInt(DataInputStream.java:387)
+	at org.apache.hadoop.hbase.ipc.HBaseClient$Connection.receiveResponse(HBaseClient.java:571)
+	at org.apache.hadoop.hbase.ipc.HBaseClient$Connection.run(HBaseClient.java:505)
+2014-05-13 16:27:25[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.NoRouteToHostException: 没有到主机的路由
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-05-13 16:27:25[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-05-13 16:27:28[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.NoRouteToHostException: 没有到主机的路由
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-05-13 16:27:28[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-05-13 17:15:42[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 17:16:36[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] craw 1th 100 industryReport begin 
+2014-05-13 17:16:48[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=m6&pageSize=100&page=1" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-13 17:16:59[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] craw 2th 100 industryReport begin 
+2014-05-13 17:21:14[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 21:56:37[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 22:44:52[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 22:46:46[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:02:02[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:06:19[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:09:20[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:17:33[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:18:23[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:20:43[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-13 23:22:18[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 00:19:38[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:09:25[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:11:17[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:11:19[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:11:42[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:11:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:11:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=mr&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:11:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=mr&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:11:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=mr&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:11:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=4&tp=mr&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:13:56[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:14:05[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:15:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:15:08[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:15:08[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:15:09[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=5&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:54:03[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:54:05[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:54:08[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=zc&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:54:28[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 01:54:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:56:21[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=92&tp=zc&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 01:58:32[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=106&tp=zc&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:00:33[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=108&tp=zc&cq=xt" resulted in 504 (Gateway Time-out); invoking error handler 
+2014-05-14 02:02:06[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 02:02:09[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:09[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:10[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:10[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:12[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cq=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:13[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:13[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:13[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cq=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:15[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:02:15[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 02:24:47[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 02:24:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:24:56[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 02:43:16[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 02:43:39[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 02:45:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wc" resulted in 504 (Gateway Time-out); invoking error handler 
+2014-05-14 02:45:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:45:41[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:45:41[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:49:28[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 02:49:30[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:49:31[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:49:31[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:49:31[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:49:31[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cq=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 02:49:40[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 02:50:04[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 02:50:14[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 03:28:57[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:30:55[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:33:59[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:35:53[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:35:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:57[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:57[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:59[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:35:59[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:36:17[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:37:00[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:19[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:37:19[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:20[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:21[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:21[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:21[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:22[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:22[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:23[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:24[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:36[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:36[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:37[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:37[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:37[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:38[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:38[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:38[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:37:38[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 03:38:24[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:25[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:25[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:26[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:26[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 03:38:33[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-14 03:38:36[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:38[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=4&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:38[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=5&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=7&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=8&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=9&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:52[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=14&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=16&tp=mr&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=mr&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:38:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=5&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=6&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=7&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=11&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=12&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:09[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=14&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:43[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=20&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=21&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:47[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=24&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:47[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=25&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:48[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=26&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:48[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=27&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:48[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=28&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=30&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:39:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=31&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:40:05[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=35&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:40:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=37&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:40:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=38&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:40:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=59&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:40:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=62&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:41:33[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=70&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:41:33[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=71&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:41:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=78&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:03[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=86&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=89&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=90&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=91&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=92&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:09[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=94&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:12[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=97&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=101&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:36[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=103&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=106&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=113&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=114&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=115&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=116&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=117&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=119&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=120&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=121&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=122&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=123&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:42:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=124&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=127&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=128&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=129&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=130&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:19[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=133&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:32[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=137&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=139&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=140&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=141&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=142&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:43[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=148&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:43[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=149&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=150&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=151&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=152&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:44[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=153&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=154&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=155&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=156&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:47[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=158&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=160&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=161&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:43:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=165&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:44:09[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=167&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:44:29[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=173&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:44:29[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=174&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:44:31[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=176&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:44:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=181&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:44:57[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=184&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:00[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=187&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:12[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=190&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:15[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=193&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:26[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=196&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:29[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=199&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:32[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=203&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=205&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=206&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=207&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:36[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=209&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=217&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:45[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=218&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=223&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=224&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=225&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=227&tp=zc&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=st" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=zc&cg=xt" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=zc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=zc&cg=sc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wz" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:57[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=4&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:45:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=5&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:00[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=9&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:00[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=10&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=11&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:03[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=14&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:03[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=15&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=18&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:15[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=19&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:15[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=20&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:17[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=23&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:17[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=24&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:17[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=25&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:17[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=26&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:18[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=27&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=34&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=36&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=40&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:50[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=43&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:52[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=46&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:52[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=47&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=49&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=51&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:55[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=52&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=54&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=55&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:57[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=56&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:57[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=57&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:59[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=59&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:46:59[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=60&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:47:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=63&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:47:23[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=67&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:47:23[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=68&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:47:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=77&tp=zx&cg=wc" resulted in 503 (Service Unavailable); invoking error handler 
+2014-05-14 03:48:27[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-14 16:56:23[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 16:56:24[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-05-14 16:56:24[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-05-14 16:56:25[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-05-14 16:56:26[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-05-14 16:56:26[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-05-14 16:57:17[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 16:57:49[org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation] -[WARN] RemoteException connecting to RS 
+org.apache.hadoop.ipc.RemoteException: org.apache.hadoop.hbase.ipc.ServerNotRunningYetException: Server is not running yet
+	at org.apache.hadoop.hbase.ipc.HBaseServer$Handler.run(HBaseServer.java:1315)
+
+	at org.apache.hadoop.hbase.ipc.HBaseClient.call(HBaseClient.java:918)
+	at org.apache.hadoop.hbase.ipc.WritableRpcEngine$Invoker.invoke(WritableRpcEngine.java:150)
+	at com.sun.proxy.$Proxy7.getProtocolVersion(Unknown Source)
+	at org.apache.hadoop.hbase.ipc.WritableRpcEngine.getProxy(WritableRpcEngine.java:183)
+	at org.apache.hadoop.hbase.ipc.HBaseRPC.getProxy(HBaseRPC.java:303)
+	at org.apache.hadoop.hbase.ipc.HBaseRPC.getProxy(HBaseRPC.java:280)
+	at org.apache.hadoop.hbase.ipc.HBaseRPC.getProxy(HBaseRPC.java:332)
+	at org.apache.hadoop.hbase.ipc.HBaseRPC.waitForProxy(HBaseRPC.java:236)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.getHRegionConnection(HConnectionManager.java:1278)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.getHRegionConnection(HConnectionManager.java:1235)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.getHRegionConnection(HConnectionManager.java:1222)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.locateRegionInMeta(HConnectionManager.java:918)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.locateRegion(HConnectionManager.java:814)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.locateRegion(HConnectionManager.java:782)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.locateRegionInMeta(HConnectionManager.java:915)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.locateRegion(HConnectionManager.java:818)
+	at org.apache.hadoop.hbase.client.HConnectionManager$HConnectionImplementation.locateRegion(HConnectionManager.java:782)
+	at org.apache.hadoop.hbase.client.HTable.finishSetup(HTable.java:249)
+	at org.apache.hadoop.hbase.client.HTable.<init>(HTable.java:213)
+	at org.apache.hadoop.hbase.client.HTableFactory.createHTableInterface(HTableFactory.java:36)
+	at org.apache.hadoop.hbase.client.HTablePool.createHTable(HTablePool.java:268)
+	at org.apache.hadoop.hbase.client.HTablePool.findOrCreateTable(HTablePool.java:198)
+	at org.apache.hadoop.hbase.client.HTablePool.getTable(HTablePool.java:173)
+	at org.apache.hadoop.hbase.client.HTablePool.getTable(HTablePool.java:216)
+	at cn.whu.zl.hbase.dao.ReportDAO.<init>(ReportDAO.java:48)
+	at cn.whu.zl.hbase.service.HbReportService.crawReportByGrade(HbReportService.java:61)
+	at cn.whu.zl.hbase.service.HbReportService.start(HbReportService.java:54)
+	at cn.whu.zl.hbase.service.HbReportService.main(HbReportService.java:234)
+2014-05-14 16:58:22[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 20:42:24[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 20:43:02[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 20:43:40[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 20:44:24[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-14 20:45:21[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:40:09[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:41:41[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:42:54[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:43:30[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:44:31[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:46:50[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:47:56[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:52:42[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:53:35[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 13:54:56[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 14:06:03[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 14:06:17[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=4&tp=mr&cg=wc" resulted in 404 (Not Found); invoking error handler 
+2014-05-16 14:06:37[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-16 14:31:59[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService end 
+2014-05-17 17:35:56[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-17 17:40:05[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService end 
+2014-05-17 18:18:26[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService begin 
+2014-05-17 18:19:46[cn.whu.zl.hbase.service.HbReportService] -[WARN] HbReportService end 
+2014-05-17 23:52:54[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-17 23:53:04[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=6&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:04[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=7&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:08[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=12&tp=mr&cg=wc" resulted in 500 (Internal Server Error); invoking error handler 
+2014-05-17 23:53:15[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:22[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=zc&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:22[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wz" resulted in 500 (Internal Server Error); invoking error handler 
+2014-05-17 23:53:25[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:26[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=24&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:52[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=27&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=28&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:53:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=29&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:24[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=60&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:26[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=62&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:26[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=63&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:27[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=64&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=76&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=77&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=78&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:41[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=79&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:54:48[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=87&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:55:02[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=7&tp=zx&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:55:04[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=9&tp=zx&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:55:05[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=st" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:55:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:55:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:55:08[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-17 23:57:14[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-17 23:57:17[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:19[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:19[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=4&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:21[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=5&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:24[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=8&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:29[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=13&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:29[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=14&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:32[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=st" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:32[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=xt" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:33[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:33[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:38[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=4&tp=zc&cg=st" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=xt" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:39[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zc&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:41[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=zc&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:42[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=3&tp=zc&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:43[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=4&tp=zc&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:49[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=10&tp=zc&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:51[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=13&tp=zc&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:52[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:53[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=st" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:54[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=zx&cg=xt" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=zx&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=xt" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:57:58[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=jc&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:58:00[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mc&cg=xt" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-17 23:58:01[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-18 00:06:32[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-18 00:06:34[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:06:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=st" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:06:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=xt" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:07:57[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-18 00:07:59[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:08:00[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=1&tp=mr&cg=st" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:08:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=sc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:08:01[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?pageSize=100&page=1&style=hyyb&dt=y2&tp=mr&cg=wz" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:11:03[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-18 00:11:29[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-18 00:11:32[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&pageSize=100&page=2&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:11:58[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService begin 
+2014-05-18 00:19:35[cn.whu.zl.hbase.service.HbIndusReportService] -[WARN] HbIndusReportService end 
+2014-05-18 00:21:56[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=31&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:21:59[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=32&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=33&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=33&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:06[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=33&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:07[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=33&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=35&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:14[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=35&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:15[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=35&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:22:30[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=37&tp=mr&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:31:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=72&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:31:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=72&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:18[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=76&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:25[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=79&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:25[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=79&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=83&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:35[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=83&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=84&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 00:32:40[org.springframework.web.client.RestTemplate] -[WARN] GET request for "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&pageSize=100&page=84&tp=zc&cg=wc" resulted in 502 (Bad Gateway); invoking error handler 
+2014-05-18 02:41:31[org.hibernate.engine.jdbc.spi.SqlExceptionHelper] -[WARN] SQL Error: 1146, SQLState: 42S02 
+2014-05-18 03:14:49[cn.whu.zl.service.StockIndustryService] -[WARN] crawler started 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw industryParam end 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw crawDeepStockIndus start 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 保险 begin 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 玻璃陶瓷 begin 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 材料行业 begin 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 电力行业 begin 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 电子信息 begin 
+2014-05-18 03:14:51[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 电子元件 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 房地产 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 纺织服装 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 钢铁行业 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 港口水运 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 高速公路 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 工程建设 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 工艺商品 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 公用事业 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 国际贸易 begin 
+2014-05-18 03:14:52[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 航天航空 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 化工行业 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 化纤行业 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 机械行业 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 家电行业 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 交运设备 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 交运物流 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 旅游酒店 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 煤炭采选 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 民航机场 begin 
+2014-05-18 03:14:53[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 木业家具 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 酿酒行业 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 农牧饲渔 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 汽车行业 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 券商信托 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 商业百货 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 石油行业 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 食品行业 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 输配电气 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 水泥建材 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 塑胶制品 begin 
+2014-05-18 03:14:54[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 通讯行业 begin 
+2014-05-18 03:14:55[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 文化传媒 begin 
+2014-05-18 03:14:55[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 医药行业 begin 
+2014-05-18 03:14:55[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 仪器仪表 begin 
+2014-05-18 03:14:55[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 银行 begin 
+2014-05-18 03:14:55[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 有色金属 begin 
+2014-05-18 03:14:55[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 造纸印刷 begin 
+2014-05-18 03:14:57[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 综合行业 begin 
+2014-05-18 03:14:57[cn.whu.zl.service.StockIndustryService] -[WARN] crawler ended 
+2014-05-18 03:14:57[org.hibernate.engine.jdbc.spi.SqlExceptionHelper] -[WARN] SQL Error: 1062, SQLState: 23000 
+2014-05-18 03:15:30[cn.whu.zl.service.StockIndustryService] -[WARN] crawler started 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw industryParam end 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw crawDeepStockIndus start 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 保险 begin 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 玻璃陶瓷 begin 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 材料行业 begin 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 电力行业 begin 
+2014-05-18 03:15:31[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 电子信息 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 电子元件 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 房地产 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 纺织服装 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 钢铁行业 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 港口水运 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 高速公路 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 工程建设 begin 
+2014-05-18 03:15:32[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 工艺商品 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 公用事业 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 国际贸易 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 航天航空 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 化工行业 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 化纤行业 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 机械行业 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 家电行业 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 交运设备 begin 
+2014-05-18 03:15:33[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 交运物流 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 旅游酒店 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 煤炭采选 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 民航机场 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 木业家具 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 酿酒行业 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 农牧饲渔 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 汽车行业 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 券商信托 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 商业百货 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 石油行业 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 食品行业 begin 
+2014-05-18 03:15:34[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 输配电气 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 水泥建材 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 塑胶制品 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 通讯行业 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 文化传媒 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 医药行业 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 仪器仪表 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 银行 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 有色金属 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 造纸印刷 begin 
+2014-05-18 03:15:35[cn.whu.zl.service.StockIndustryService] -[WARN] craw stocks from 综合行业 begin 
+2014-05-18 03:15:36[cn.whu.zl.service.StockIndustryService] -[WARN] crawler ended 
+2014-05-18 16:00:23[org.hibernate.engine.jdbc.spi.SqlExceptionHelper] -[WARN] SQL Error: 1146, SQLState: 42S02 
+2014-05-18 16:04:18[org.hibernate.engine.jdbc.spi.SqlExceptionHelper] -[WARN] SQL Error: 1146, SQLState: 42S02 
+2014-06-15 07:32:48[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-06-15 07:32:48[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-06-15 07:32:49[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-06-15 07:32:50[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-06-15 07:32:50[org.apache.hadoop.hbase.zookeeper.RecoverableZooKeeper] -[WARN] Possibly transient ZooKeeper exception: org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /hbase/master 
+2014-06-15 07:32:51[org.apache.zookeeper.ClientCnxn$SendThread] -[WARN] Session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect 
+java.net.ConnectException: 拒绝连接
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:708)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:286)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1035)
+2014-06-15 22:29:12[org.hibernate.engine.jdbc.spi.SqlExceptionHelper] -[WARN] SQL Error: 1062, SQLState: 23000 
+2014-06-15 22:29:41[org.hibernate.engine.jdbc.spi.SqlExceptionHelper] -[WARN] SQL Error: 1062, SQLState: 23000 

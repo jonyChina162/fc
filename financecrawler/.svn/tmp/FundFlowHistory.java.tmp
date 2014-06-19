@@ -1,0 +1,188 @@
+/**
+ * 
+ */
+package cn.whu.zl.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import cn.whu.zl.entity.TransactionHistory.Builder;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Entity
+@Table(name="fundflowhistory")
+public class FundFlowHistory implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	public FundFlowHistory(){}
+	
+	public FundFlowHistory(StockDataPK sdPK) {
+		super();
+		this.sdPK = sdPK;
+	}
+
+	@Override
+	public String toString() {
+		return "FundFlowHistory [sdPK=" + sdPK + ", fundIn=" + fundIn
+				+ ", fundOut=" + fundOut + ", netIn=" + netIn + ", mainIn="
+				+ mainIn + ", mainOut=" + mainOut + ", mainNetIn=" + mainNetIn
+				+ ", AllMFI1=" + AllMFI1 + ", AllMFI7=" + AllMFI7
+				+ ", MainMFI1=" + MainMFI1 + ", MainMFI7=" + MainMFI7 + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sdPK == null) ? 0 : sdPK.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FundFlowHistory other = (FundFlowHistory) obj;
+		if (sdPK == null) {
+			if (other.sdPK != null)
+				return false;
+		} else if (!sdPK.equals(other.sdPK))
+			return false;
+		return true;
+	}
+
+	public StockDataPK getSdPK() {
+		return sdPK;
+	}
+
+	public void setSdPK(StockDataPK sdPK) {
+		this.sdPK = sdPK;
+	}
+
+	public int getFundIn() {
+		return fundIn;
+	}
+
+	public void setFundIn(int fundIn) {
+		this.fundIn = fundIn;
+	}
+
+	public int getFundOut() {
+		return fundOut;
+	}
+
+	public void setFundOut(int fundOut) {
+		this.fundOut = fundOut;
+	}
+
+	public int getNetIn() {
+		return netIn;
+	}
+
+	public void setNetIn(int netIn) {
+		this.netIn = netIn;
+	}
+
+	public int getMainIn() {
+		return mainIn;
+	}
+
+	public void setMainIn(int mainIn) {
+		this.mainIn = mainIn;
+	}
+
+	public int getMainOut() {
+		return mainOut;
+	}
+
+	public void setMainOut(int mainOut) {
+		this.mainOut = mainOut;
+	}
+
+	public int getMainNetIn() {
+		return mainNetIn;
+	}
+
+	public void setMainNetIn(int mainNetIn) {
+		this.mainNetIn = mainNetIn;
+	}
+
+	
+	public Float getAllMFI1(){
+		return AllMFI1;
+	}
+	
+	public void setAllMFI1(Float allMFI1){
+		AllMFI1 = allMFI1;
+	}
+	
+	public Float getAllMFI7(){
+		return AllMFI7;
+	}
+	
+	public void setAllMFI7(Float allMFI7){
+		AllMFI7 = allMFI7;
+	}
+	
+	public Float getMainMFI1(){
+		return MainMFI1;
+	}
+	
+	public void setMainMFI1(Float mainMFI1){
+		MainMFI1 = mainMFI1;
+	}
+	
+	public Float getMainMFI7(){
+		return MainMFI7;
+	}
+	
+	public void setMainMFI7(Float mainMFI7){
+		MainMFI7 =  mainMFI7;
+	}
+	
+	
+	@EmbeddedId
+	private StockDataPK sdPK;
+
+	@Column(name = "fundIn")
+	private int fundIn;
+
+	@Column(name = "fundOut")
+	private int fundOut;
+
+	@Column(name = "netIn")
+	private int netIn;
+
+	@Column(name = "mainIn")
+	private int mainIn;
+
+	@Column(name = "mainOut")
+	private int mainOut;
+
+	@Column(name = "mainNetIn")
+	private int mainNetIn;
+	
+	@Column(name = "AllMFI1",scale = 2)
+	private Float AllMFI1;
+	
+	@Column(name = "AllMFI7",scale = 2)
+	private Float AllMFI7;
+	
+	@Column(name = "MainMFI1",scale = 2)
+	private Float MainMFI1;
+	
+	@Column(name = "MainMFI7",scale = 2)
+	private Float MainMFI7;
+
+}

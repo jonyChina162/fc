@@ -1,0 +1,527 @@
+/**
+ * 
+ */
+package cn.whu.zl.dao;
+
+import static cn.whu.zl.util.CrawlerUtil.minE0;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import cn.whu.zl.dao.impl.GenericJPADao;
+import cn.whu.zl.entity.StockDataPK;
+import cn.whu.zl.entity.TransactionHistory;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Repository("transactionHistoryDao")
+public class TransactionHistoryDao extends
+		GenericJPADao<TransactionHistory, StockDataPK> {
+	@SuppressWarnings("unchecked")
+	public float getCloPrice(String stockID, Date date, String symbol1,
+			String symbol2, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date >= :date order by date";
+		if (!symbol2.toLowerCase().equals("after")) {
+			sql.replaceAll(">=", "<");
+			sql += " desc";
+		}
+
+		Query q = em.createQuery(sql);
+		if (number < 7)
+			number = 7;
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 7) {
+
+			switch (symbol1.toLowerCase()) {
+			case "high":
+				result = Collections.max(list);
+				break;
+			case "low":
+				result = minE0(list);
+				break;
+			}
+		}
+
+		if (list != null && list.size() > 0 && number == 7)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public float getCurCloPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date < :date order by date desc";
+
+		Query q = em.createQuery(sql);
+
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+
+		if (list != null && list.size() > 0) {
+			if (number > list.size())
+				number = list.size();
+			result = list.get(number - 1);
+		}
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Float[] getPre2CloPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date < :date order by date desc";
+
+		Query q = em.createQuery(sql);
+
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		number += 1; // 取前两天的值
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		Float[] result = new Float[] { 0.0F, 0.0F };
+
+		if (list != null && list.size() > 0) {
+			if (number > list.size())
+				number = list.size();
+			result[1] = list.get(number - 1);
+			if (number > 1)
+				result[0] = list.get(number - 2);
+		}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public float getHighPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date >= :date order by date";
+
+		Query q = em.createQuery(sql);
+		if (number < 6)// 可能当天是空值，但不可能停牌超过7天，所以取7天的值
+			number = 6;
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 6) {
+			//取范围内最大值
+			result = Collections.max(list);
+		}
+
+		if (list != null && list.size() > 0 && number == 6)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public float getLowPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date >= :date order by date";
+
+		Query q = em.createQuery(sql);
+		if (number < 6)
+			number = 6;
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 6) {
+			result = minE0(list);
+		}
+
+		if (list != null && list.size() > 0 && number == 6)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TransactionHistory> getTranHisList(String stockID, Date date,
+			int number) {
+		Query q = em
+				.createQuery("select ts from TransactionHistory ts where stockID= :stockID and date >= :date and cloPrice!= 0.0 order by date ");
+		q.setParameter("stockID", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<TransactionHistory> list = q.getResultList();
+		q = null;
+		em.clear();
+		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TransactionHistory> getOneStockAllTranHisList(String stockID) {
+		Query q = em
+				.createQuery("select th from TransactionHistory th where stockID=:stockID");
+		q.setParameter("stockID", stockID);
+		List<TransactionHistory> list = q.getResultList();
+		q = null;
+		em.clear();
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Float getEFAMC(String stockID, Date date) {
+		Query q = em.createQuery("select EFAMC from TransactionHistory "
+				+ "where stockID='" + stockID + "' and date >= '" + date + "'");
+		q.setMaxResults(7);
+		Float result = 0.0f;
+
+		List<Float> list = q.getResultList();
+		if (list != null && list.size() > 0)
+
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	public void updateIndicator(float rsi6, float rsi12, float rsi24,
+			float rsi6dummy, float rsi12dummy, float rsi24dummy, float atr7,
+			float atr14, float macd, int trade, int iftradeup, int iftradedown,
+			StockDataPK sd) {
+		Query q = em
+				.createQuery("update TransactionHistory set "
+						+ "RSI6= :rsi6,RSI12= :rsi12,RSI24= :rsi24,RSI6dummy= :rsi6dummy,RSI12dummy= :rsi12dummy,RSI24dummy= :rsi24dummy,ATR7= :atr7,ATR14= :atr14,MACD= :macd,Trade= :trade,IfTradeup =:iftradeup,IfTradedown =:iftradedown "
+						+ "where stockid= :stockid and date= :date");
+		q.setParameter("rsi6", rsi6);
+		q.setParameter("rsi12", rsi12);
+		q.setParameter("rsi24", rsi24);
+		q.setParameter("rsi6dummy", rsi6dummy);
+		q.setParameter("rsi12dummy", rsi12dummy);
+		q.setParameter("rsi24dummy", rsi24dummy);
+		q.setParameter("atr7", atr7);
+		q.setParameter("atr14", atr14);
+		q.setParameter("macd", macd);
+		q.setParameter("trade", trade);
+		q.setParameter("iftradeup", iftradeup);
+		q.setParameter("iftradedown", iftradedown);
+		q.setParameter("stockid", sd.getStockID());
+		q.setParameter("date", sd.getDate());
+		q.executeUpdate();
+	}
+	
+	public void updateRSIavg(String stockid,Date date,float[] RSIavg){
+		Query q = em.createQuery("update TransactionHistory set "
+				+ "RSI6avg =:rsi6avg,RSI12avg =:rsi12avg,RSI24avg =:rsi24avg "
+				+ "where stockid =:stockid and date =:date");
+		q.setParameter("rsi6avg", RSIavg[0]);
+		q.setParameter("rsi12avg", RSIavg[1]);
+		q.setParameter("rsi24avg", RSIavg[2]);
+		q.setParameter("stockid", stockid);
+		q.setParameter("date", date);
+		q.executeUpdate();
+	}
+	
+	/*
+	 * @SuppressWarnings("unchecked") public void updateIfTrade(int
+	 * iftrade,StockDataPK sd){ Query q =
+	 * em.createQuery("update TransactionHistory set " + "IfTrade =:iftrade " +
+	 * "where stockid= :stockid and date= :date"); q.setParameter("iftrade",
+	 * iftrade); q.setParameter("stockid", sd.getStockID());
+	 * q.setParameter("date", sd.getDate()); }
+	 */
+
+	public List<Float> getRSI(String stockID,Date date){
+		List<Float> results = new ArrayList<Float>();
+		results.add(getRSI6(stockID, date));
+		results.add(getRSI12(stockID, date));
+		results.add(getRSI24(stockID, date));
+		
+		return results;
+	}
+	
+	public float getRSI6(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI6 from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+
+		return (float) q.getResultList().get(0);
+	}
+	
+	public float getRSI12(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI12 from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+
+		return (float) q.getResultList().get(0);
+	}
+	
+	public float getRSI24(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI24 from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+		return (float) q.getResultList().get(0);
+	}
+	
+	public List<Integer> getRSIdummy(String stockID,Date date){
+		List<Integer> results = new ArrayList<Integer>();
+		results.add(getRSI6dummy(stockID, date));
+		results.add(getRSI12dummy(stockID, date));
+		results.add(getRSI24dummy(stockID, date));
+		
+		return results;
+	}
+	
+	public int getRSI6dummy(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI6dummy from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0;
+
+		return (int) q.getResultList().get(0);
+	}
+	
+	public int getRSI12dummy(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI12dummy from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0;
+
+		return (int) q.getResultList().get(0);
+	}
+	
+	public int getRSI24dummy(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI24dummy from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0;
+		return (int) q.getResultList().get(0);
+	}
+
+	public List<Float> getATR(String stockID, Date date) {
+		List<Float> results = new ArrayList<Float>();
+		results.add(getATR7(stockID, date));
+		results.add(getATR14(stockID, date));
+
+		return results;
+	}
+
+	public float getATR7(String stockID, Date date) {
+		Query q = em
+				.createQuery("select ATR7 from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+		return (float) q.getResultList().get(0);
+	}
+
+	public float getATR14(String stockID, Date date) {
+		Query q = em
+				.createQuery("select ATR14 from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+		return (float) q.getResultList().get(0);
+	}
+
+	public float getMACD(String stockID, Date date) {
+		Query q = em
+				.createQuery("select MACD from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+		return (float) q.getResultList().get(0);
+	}
+
+	public int getTrade(String stockID, Date date) {
+		Query q = em
+				.createQuery("select Trade from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0;
+		return (int) q.getResultList().get(0);
+	}
+
+	public int getIfTradeUp(String stockID, Date date) {
+		Query q = em
+				.createQuery("select IfTradeup from TransactionHistory where stockid = :stockid and date =:date");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		if (q.getResultList().size() == 0) {
+			return 0;
+		}
+		return (int) q.getResultList().get(0);
+	}
+	
+	public int getIfTradeDown(String stockID, Date date) {
+		Query q = em
+				.createQuery("select IfTradedown from TransactionHistory where stockid = :stockid and date =:date");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		if (q.getResultList().size() == 0) {
+			return 0;
+		}
+		return (int) q.getResultList().get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TransactionHistory> getAllByDate(Date e) {
+		Query q = em
+				.createQuery("select th from TransactionHistory th where date =:date");
+		q.setParameter("date", e);
+		List<TransactionHistory> rs = q.getResultList();
+		return rs;
+	}
+<<<<<<< .mine
+	
+	@SuppressWarnings("unchecked")
+	public List<Float> getRatioByDate(Date start,int day,String stockID){
+		Query q = em.createQuery("select changeRatio from TransactionHistory where stockID = :stockID and date >=:start");
+		q.setParameter("stockID", stockID);
+		q.setParameter("start", start);
+		q.setMaxResults(day);
+		List<Float> rs = q.getResultList();
+		return rs;
+	}
+=======
+	
+	public List<Float> getTurnOverRate(String stockID,Date date){
+		Query q = em.createQuery("select turnoverRate from TransactionHistory where stockid =:stockid and date<= :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(2);
+		return q.getResultList();
+		
+	}
+	
+	public List<Float> getTurnOverAmount(String stockID,Date date){
+		Query q = em.createQuery("select turnoverAmount from TransactionHistory where stockid =:stockid and date<= :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(2);
+		return q.getResultList();
+	}
+	
+	public List<Float> getChangeRatio(String stockID,Date date){
+		Query q = em.createQuery("select changeRatio from TransactionHistory where stockid =:stockid and date<= :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(2);
+		return q.getResultList();
+	}
+	
+	public List<Float> getRSIa(String stockID,Date date){
+		List<Float> results = new ArrayList<Float>();
+		results.add(getRSI6a(stockID, date));
+		results.add(getRSI12a(stockID, date));
+		results.add(getRSI24a(stockID, date));
+		
+		return results;
+	}
+	
+	public float getRSI6a(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI6avg from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+
+		return (float) q.getResultList().get(0);
+	}
+	
+	public float getRSI12a(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI12avg from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+
+		return (float) q.getResultList().get(0);
+	}
+	
+	public float getRSI24a(String stockID, Date date) {
+		Query q = em
+				.createQuery("select RSI24avg from TransactionHistory where stockid = :stockid and date < :date order by date desc");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(1);
+		if(q.getResultList().size() == 0)
+			return 0f;
+		return (float) q.getResultList().get(0);
+	}
+>>>>>>> .r74
+}

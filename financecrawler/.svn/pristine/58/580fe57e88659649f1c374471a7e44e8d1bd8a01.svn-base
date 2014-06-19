@@ -1,0 +1,316 @@
+package cn.whu.zl.hbase.service;
+
+import static cn.whu.zl.util.CrawlerUtil.GBK;
+import static cn.whu.zl.util.CrawlerUtil.strToFloat;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import cn.whu.zl.dao.IndustryReportDao;
+import cn.whu.zl.hbase.HbaseConf;
+import cn.whu.zl.hbase.dao.ReportDAO;
+import cn.whu.zl.hbase.model.HbIndusReports;
+import cn.whu.zl.hbase.model.HbReports;
+import cn.whu.zl.service.BasicCrawServiceImp;
+import cn.whu.zl.util.CrawlerUtil;
+import cn.whu.zl.util.FinConstants;
+
+//@Service("hbReportSer")
+public class HbReportService extends BasicCrawServiceImp {
+	private static final Logger log = Logger.getLogger(HbReportService.class
+			.getName());
+
+	public HbReportService() {
+		log.debug("HbReportService crawler initialization begin");
+
+		initiaHttpClient();
+
+		seed = "http://data.eastmoney.com/report/data.aspx?style=ggyb&dt=y2&tp=all&cg=all&pageSize=100&page=1";
+
+		mapper = new ObjectMapper();
+		mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+
+		log.debug("HbReportService crawler initialization end");
+	}
+
+	@Override
+	public void start() {
+		log.info("HbReportService begin");
+
+		crawReportByGrade();
+
+		log.info("HbReportService end");
+	}
+
+	private void crawReportByGrade() {
+		pool = new HTablePool(HbaseConf.conf, 1);
+		dao = new ReportDAO(pool);
+		try {
+			String path = System.getProperty("user.dir")
+					+ "/src/main/resources/orgWeight.txt";
+			orgImpact = readOrgImpact(path);
+		} catch (IOException ioe) {
+			log.error(ioe);
+			ioe.printStackTrace();
+		}
+		for (int m = 0; m < 5; m++)
+			for (int n = 0; n < 5; n++) {
+				String grade = FinConstants.HB_REPORT_GRADE_ARR[m];
+				String gChange = FinConstants.HB_REPORT_GRADE_CHANGE_ARR[n];
+				try {
+					int d1 = CrawlerUtil.hbGradeDummy(grade);
+					int d2 = CrawlerUtil.hbGChangeDummy(gChange);
+					int pages = crawReportPagesByGrade(DEFAULT_PAGESISE, GBK,
+							grade, gChange);
+					log.info(m + "," + n + "," + pages);
+					for (int i = 1; i <= pages; i++) {
+						try {
+							crawReportByGrade(i, DEFAULT_PAGESISE, GBK, grade,
+									gChange, d1, d2);
+						} catch (URISyntaxException use) {
+							log.error(use);
+						} catch (IOException ioe) {
+							log.error(ioe);
+							ioe.printStackTrace();
+						} catch (ParseException pe) {
+							log.error(pe);
+							pe.printStackTrace();
+						} catch (Exception e) {
+							log.error(e);
+							e.printStackTrace();
+						}
+					}
+				} catch (Exception e) {
+					log.error(e);
+					e.printStackTrace();
+				}
+			}
+
+		try {
+			pool.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+		}
+
+		dao = null;
+	}
+
+	private void crawReportByGrade(int page, String count, String charSet,
+			String grade, String gChange, int d1, int d2)
+			throws URISyntaxException, IOException, ParseException, Exception {
+		log.info("craw " + grade + " 评级 " + gChange + " 评级变动 " + page + "th "
+				+ count + " industryReport begin");
+
+		try {
+
+			uriBuilder = new URIBuilder(seed);
+
+			uriBuilder.setParameter("style", "ggyb");
+			uriBuilder.setParameter("dt", "y2");
+			uriBuilder.setParameter("pageSize", count);
+			uriBuilder.setParameter("page", String.valueOf(page));
+			uriBuilder.setParameter("tp", grade);
+			uriBuilder.setParameter("cg", gChange);
+
+			SimpleClientHttpRequestFactory clientFactory = new SimpleClientHttpRequestFactory();
+			clientFactory.setConnectTimeout(10000);
+			clientFactory.setReadTimeout(10000);
+
+			RestTemplate rest = new RestTemplate(clientFactory);
+
+			HttpEntity<String> entity = null;
+
+			String html = null;
+
+			int retry = 0;
+
+			while (retry < 10) {
+				try {
+					entity = rest
+							.getForEntity(uriBuilder.build(), String.class);
+					if (entity == null)
+						throw new NullPointerException("entity is empty");
+
+					html = entity.getBody();
+
+					if (html == null || html.length() == 0)
+						throw new NullPointerException("html is empty");
+					
+					break;
+				} catch (Exception e) {
+					log.info("retry : " + retry);
+					retry++;
+				}
+			}
+
+			html = html.substring(html.indexOf("[") + 1, html.indexOf("]"));
+			String[] reports = html.split("\"");
+			int len = reports.length;
+			for (int i = 1; i < len - 1; i += 2) {
+				HbReports ir = new HbReports();
+				String report = new String(reports[i]);
+				String[] tmp = report.split(",");
+
+				ir.stockID = new String(tmp[0]);
+				Date date = new SimpleDateFormat("yyyy-MM-dd")
+						.parse(new String(tmp[4]));
+
+				ir.time = new SimpleDateFormat("yyyyMMdd").format(date);
+
+				StringBuilder link = new StringBuilder(preURL);
+				link.append(ir.time);
+				link.append("/");
+				link.append(new String(tmp[13]));
+				link.append(sufURL);
+
+				ir.url = link.toString();
+				ir.stockName = new String(tmp[1]);
+				ir.orgName = new String(tmp[7]);
+				ir.profitThis = strToFloat(new String(tmp[10]));
+				ir.ratioThis = strToFloat(new String(tmp[18]));
+				ir.profitNext = strToFloat(new String(tmp[11]));
+				ir.ratioNext = strToFloat(new String(tmp[20]));
+				ir.orgImpact = orgImpact.get(ir.orgName);
+
+				String title = new String(tmp[14]);
+				try {
+					title = new String(title.getBytes(GBK), GBK);
+				} catch (UnsupportedEncodingException e) {
+					title = "";
+				}
+
+				ir.title = title;
+				ir.graChange = d2;
+				ir.grade = d1;
+
+				ir.reContent = "";
+				saveToDB(ir);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		log.info("craw " + grade + " 评级 " + gChange + " 评级变动 " + page + "th "
+				+ count + " industryReport end");
+	}
+
+	private void saveToDB(HbReports ir) throws Exception {
+		dao.add(ir);
+	}
+
+	private int crawReportPagesByGrade(String pageNum, String charSet,
+			String grade, String gChange) throws Exception {
+		int pages = 0;
+		try {
+			uriBuilder = new URIBuilder(seed);
+
+			uriBuilder.setParameter("style", "ggyb");
+			uriBuilder.setParameter("dt", "y2");
+			uriBuilder.setParameter("tp", grade);
+			uriBuilder.setParameter("cg", gChange);
+
+			SimpleClientHttpRequestFactory clientFactory = new SimpleClientHttpRequestFactory();
+			clientFactory.setConnectTimeout(10000);
+			clientFactory.setReadTimeout(10000);
+
+			RestTemplate rest = new RestTemplate(clientFactory);
+
+			HttpEntity<String> entity = null;
+
+			String html = null;
+
+			int retry = 0;
+
+			while (retry < 10) {
+				try {
+					entity = rest
+							.getForEntity(uriBuilder.build(), String.class);
+					if (entity == null)
+						throw new NullPointerException("entity is empty");
+
+					html = entity.getBody();
+
+					if (html == null || html.length() == 0)
+						throw new NullPointerException("html is empty");
+					
+					break;
+				} catch (Exception e) {
+					log.info("retry : " + retry);
+					retry++;
+				}
+			}
+
+			JsonNode node = mapper.readTree(html.substring(html.indexOf("{")));
+			pages = Integer.parseInt(node.get("pages").toString()
+					.replaceAll("\"", ""));
+
+			return pages;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public Map<String, Integer> readOrgImpact(String path)
+			throws FileNotFoundException, IOException {
+		Map<String, Integer> map = new HashMap<String, Integer>(100);
+
+		File f = new File(path);
+		if (!f.exists())
+			throw new FileNotFoundException("can not read file " + path);
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		String tmp = "";
+		while ((tmp = br.readLine()) != null) {
+			String[] strs = tmp.split("[\\s]+");
+			map.put(strs[0], Integer.parseInt(strs[1].trim()));
+		}
+
+		if (br != null)
+			br.close();
+		return map;
+	}
+
+	public static void main(String[] args) {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"spring-jpa.xml");
+		HbReportService hbrs = (HbReportService) context.getBean("hbReportSer");
+		hbrs.start();
+	}
+
+	private final String preURL = "http://data.eastmoney.com/report/";
+	private final String sufURL = ".html";
+	private final String DEFAULT_PAGESISE = "100";
+	private Map<String, Integer> orgImpact;
+	private HTablePool pool;
+	private ObjectMapper mapper;
+	private ReportDAO dao;
+	@Autowired
+	private IndustryReportDao industryReportDao;
+
+}

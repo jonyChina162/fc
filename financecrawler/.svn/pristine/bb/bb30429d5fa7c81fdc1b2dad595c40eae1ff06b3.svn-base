@@ -1,0 +1,41 @@
+package cn.whu.zl.dao;
+
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import cn.whu.zl.dao.impl.GenericJPADao;
+import cn.whu.zl.entity.JrjStockReport;
+import cn.whu.zl.entity.StockDataTitlePK;
+
+@Repository("jrjStockReportDao")
+public class JrjStockReportDao extends
+		GenericJPADao<JrjStockReport, StockDataTitlePK> {
+	@SuppressWarnings("unchecked")
+	public List<JrjStockReport> getOrgReports(String insID,Date begin,Date end){
+		Query q = em.createQuery("select jrj from JrjStockReport jrj where orgID = :insID and date between :begin and :end",JrjStockReport.class);
+		q.setParameter("insID", insID);
+		q.setParameter("begin", begin);
+		q.setParameter("end", end);
+		List<JrjStockReport> list = q.getResultList();
+		q=null;
+		em.clear();
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<JrjStockReport> getOrgReportsE0(String insID,Date begin,Date end){
+		Query q = em.createQuery("select jrj from JrjStockReport jrj where orgID = :insID and date between :begin and :end and tarPrice <> 0.0f",JrjStockReport.class);
+		q.setParameter("insID", insID);
+		q.setParameter("begin", begin);
+		q.setParameter("end", end);
+		List<JrjStockReport> list = q.getResultList();
+		q=null;
+		em.clear();
+		return list;
+	}
+}

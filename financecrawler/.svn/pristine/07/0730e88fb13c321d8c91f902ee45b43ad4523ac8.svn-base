@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<context:component-scan base-package="cn.whu.zl" />
+	<context:annotation-config />
+	<!-- <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" 
+		/> -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jpaVendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="database" value="MYSQL" />
+		<!-- <property name="showSql" value="false" /> <property name="generateDdl" 
+			value="false" /> -->
+		<property name="databasePlatform" value="org.hibernate.dialect.MySQLInnoDBDialect" />
+	</bean>
+
+	<!-- <bean id="emf" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean"> 
+		<property name="persistenceUnitName" value="hibernateJPA" /> </bean> -->
+	<bean id="emf"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="hibernateJPA" />
+		<!-- <property name="persistenceXmlLocation" value="/src/main/resources/persistence.xml"/> -->
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="autoCommitOnClose" value="false" />
+		<property name="checkoutTimeout" value="${cpool.checkoutTimeout}" />
+		<property name="initialPoolSize" value="${cpool.minPoolSize}" />
+		<property name="minPoolSize" value="${cpool.minPoolSize}" />
+		<property name="maxPoolSize" value="${cpool.maxPoolSize}" />
+		<property name="maxIdleTime" value="${cpool.maxIdleTime}" />
+		<property name="acquireIncrement" value="${cpool.acquireIncrement}" />
+		<property name="maxIdleTimeExcessConnections" value="${cpool.maxIdleTimeExcessConnections}" />
+	</bean>
+
+	<!-- <bean id="jpaTemplate" class="org.springframework.orm.jpa.JpaTemplate"> 
+		<property name="entityManagerFactory" ref="emf" /> </bean> -->
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf" />
+		<!-- <property name="jpaDialect" ref=""/> -->
+	</bean>
+	<!--事务管理配置 -->
+	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+		<tx:attributes> <tx:method name="add*" propagation="REQUIRED" /> <tx:method 
+		name="remove*" propagation="REQUIRED" /> <tx:method name="delete*" propagation="REQUIRED" 
+		/> <tx:method name="update*" propagation="REQUIRED" /> <tx:method name="*" 
+		propagation="REQUIRED" /> </tx:attributes> </tx:advice> <aop:config proxy-target-class="true"> 
+		<aop:advisor pointcut="execution(* cn.whu.zl.service.*.*(..))" advice-ref="txAdvice" 
+		/> </aop:config> -->
+
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true"/> -->
+
+	<!-- <import resource="spring-quartz.xml" /> -->
+
+</beans>

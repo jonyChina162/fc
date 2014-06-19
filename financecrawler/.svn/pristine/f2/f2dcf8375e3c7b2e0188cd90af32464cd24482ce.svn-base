@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+<layout class="org.apache.log4j.PatternLayout">
+<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}[%-10C] -[%p] %m %n"/>
+</layout>
+<filter class="org.apache.log4j.varia.LevelRangeFilter">
+<param name="LevelMax" value="ERROR" />
+<param name="LevelMin" value="INFO" />
+</filter>
+</appender>
+
+<appender name="ERROR" class="org.apache.log4j.RollingFileAppender">
+<param name="File" value="./src/main/resources/log/error.log"/>
+<param name="Append" value="true"/>
+<param name="MaxFileSize" value="1MB"/>
+<param name="MaxBackupIndex" value="100"/>
+<layout class="org.apache.log4j.PatternLayout">
+<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}[%-10C] -[%p] %m %n"/>
+</layout>
+<filter class="org.apache.log4j.varia.LevelRangeFilter">
+<param name="LevelMax" value="ERROR" />
+<param name="LevelMin" value="ERROR" />
+</filter>
+</appender>
+
+<appender name="WARN" class="org.apache.log4j.RollingFileAppender">
+<param name="File" value="./src/main/resources/log/warn.log"/>
+<param name="Append" value="true"/>
+<param name="MaxFileSize" value="1MB"/>
+<param name="MaxBackupIndex" value="100"/>
+<layout class="org.apache.log4j.PatternLayout">
+<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}[%-10C] -[%p] %m %n"/>
+</layout>
+<filter class="org.apache.log4j.varia.LevelRangeFilter">
+<param name="LevelMax" value="WARN" />
+<param name="LevelMin" value="WARN" />
+</filter>
+</appender>
+<!-- 根logger的设置-->  
+<root>
+<appender-ref ref="STDOUT"/>
+<appender-ref ref="ERROR"/>
+<appender-ref ref="WARN"/>
+</root>
+</log4j:configuration>

@@ -1,0 +1,372 @@
+package cn.whu.zl.hbase.service;
+
+import static cn.whu.zl.util.CrawlerUtil.GBK;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import cn.whu.zl.hbase.HbaseConf;
+import cn.whu.zl.hbase.dao.IndusReportDAO;
+import cn.whu.zl.hbase.model.HbIndusReports;
+import cn.whu.zl.service.BasicCrawServiceImp;
+import cn.whu.zl.util.CrawlerUtil;
+import cn.whu.zl.util.FinConstants;
+
+//@Service("hbIndusReportSer")
+public class HbIndusReportService extends BasicCrawServiceImp {
+	private static final Logger log = Logger
+			.getLogger(HbIndusReportService.class.getName());
+
+	public HbIndusReportService() {
+		log.debug("HbIndusReportService crawler initialization begin");
+
+		initiaHttpClient();
+
+		seed = "http://data.eastmoney.com/report/data.aspx?style=hyyb&dt=y2&tp=all&cg=all&pageSize=100&page=1";
+
+		mapper = new ObjectMapper();
+		mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+
+		log.debug("HbIndusReportService crawler initialization end");
+	}
+
+	@Override
+	public void start() {
+		log.warn("HbIndusReportService begin");
+
+		crawIndusReportByGrade();
+
+		log.warn("HbIndusReportService end");
+	}
+
+	private void crawIndusReportByGrade() {
+		pool = new HTablePool(HbaseConf.conf, 10);
+		dao = new IndusReportDAO(pool);
+		for (int m = 0; m < 5; m++)
+			for (int n = 0; n < 5; n++) {
+				String grade = FinConstants.HB_REPORT_GRADE_ARR[m];
+				String gChange = FinConstants.HB_REPORT_GRADE_CHANGE_ARR[n];
+				try {
+					int d1 = CrawlerUtil.hbGradeDummy(grade);
+					int d2 = CrawlerUtil.hbGChangeDummy(gChange);
+					int pages = crawReportPagesByGrade(DEFAULT_PAGESISE,
+							preURL, GBK, grade, gChange);
+					log.info(m + "," + n + "," + pages);
+					for (int i = 1; i <= pages; i++) {
+						try {
+							crawIndustryReportByGrade(i, DEFAULT_PAGESISE, GBK,
+									grade, gChange, d1, d2);
+						} catch (URISyntaxException use) {
+							log.error(use);
+						} catch (IOException ioe) {
+							log.error(ioe);
+							ioe.printStackTrace();
+						} catch (ParseException pe) {
+							log.error(pe);
+							pe.printStackTrace();
+						} catch (Exception e) {
+							log.error(e);
+							e.printStackTrace();
+						}
+					}
+				} catch (Exception e) {
+					log.error(e);
+					e.printStackTrace();
+				}
+			}
+
+		try {
+			pool.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+		}
+
+		dao = null;
+	}
+
+	// private void crawIndustryReport() {
+	// try {
+	// int pages = crawReportPages(DEFAULT_PAGESISE, preURL, GBK);
+	// for (int i = 1; i <= pages; i++) {
+	// try {
+	// crawIndustryReport(i, DEFAULT_PAGESISE, GBK);
+	// } catch (URISyntaxException use) {
+	// log.error(use);
+	// } catch (IOException ioe) {
+	// log.error(ioe);
+	// ioe.printStackTrace();
+	// } catch (ParseException pe) {
+	// log.error(pe);
+	// pe.printStackTrace();
+	// } catch (Exception e) {
+	// log.error(e);
+	// e.printStackTrace();
+	// }
+	// }
+	// } catch (Exception e) {
+	// log.error(e);
+	// e.printStackTrace();
+	// }
+	// }
+
+	private void crawIndustryReportByGrade(int page, String count,
+			String charSet, String grade, String gChange, int d1, int d2)
+			throws URISyntaxException, IOException, ParseException {
+		log.info("craw " + grade + " 评级 " + gChange + " 评级变动 " + page + "th "
+				+ count + " industryReport begin");
+
+		try {
+
+			uriBuilder = new URIBuilder(seed);
+
+			uriBuilder.setParameter("style", "hyyb");
+			uriBuilder.setParameter("dt", "y2");
+			uriBuilder.setParameter("pageSize", count);
+			uriBuilder.setParameter("page", String.valueOf(page));
+			uriBuilder.setParameter("tp", grade);
+			uriBuilder.setParameter("cg", gChange);
+
+			SimpleClientHttpRequestFactory clientFactory = new SimpleClientHttpRequestFactory();
+			clientFactory.setConnectTimeout(10000);
+			clientFactory.setReadTimeout(10000);
+
+			RestTemplate rest = new RestTemplate(clientFactory);
+
+			HttpEntity<String> entity = null;
+
+			String html = null;
+
+			int retry = 0;
+
+			while (retry < 10) {
+				try {
+					entity = rest
+							.getForEntity(uriBuilder.build(), String.class);
+					if (entity == null)
+						throw new NullPointerException("entity is empty");
+
+					html = entity.getBody();
+
+					if (html == null || html.length() == 0)
+						throw new NullPointerException("html is empty");
+					
+					break;
+				} catch (Exception e) {
+					log.info("retry : " + retry);
+					retry++;
+				}
+			}
+
+			html = html.substring(html.indexOf("[") + 1, html.indexOf("]"));
+			String[] reports = html.split("\"");
+			int len = reports.length;
+			for (int i = 1; i < len - 1; i += 2) {
+				HbIndusReports ir = new HbIndusReports();
+				String report = new String(reports[i]);
+				String[] tmp = report.split(",");
+				Date date = new SimpleDateFormat("yyyy-MM-dd")
+						.parse(new String(tmp[4]));
+				ir.indusName = new String(tmp[1]);
+				ir.time = new SimpleDateFormat("yyyyMMdd").format(date);
+
+				StringBuilder link = new StringBuilder(preURL);
+				link.append(ir.time);
+				link.append("/hy,");
+				link.append(new String(tmp[9]));
+				link.append(sufURL);
+
+				ir.url = link.toString();
+				ir.orgName = new String(tmp[7]);
+
+				String title = new String(tmp[10]);
+				try {
+					title = new String(title.getBytes(GBK), GBK);
+				} catch (UnsupportedEncodingException e) {
+					title = "";
+				}
+
+				ir.title = title;
+				ir.graChange = d2;
+				ir.grade = d1;
+				ir.orgImpact = Integer.parseInt(new String(tmp[11]));
+				ir.priceCR = new String(tmp[2]);
+
+				ir.reContent = "";
+				saveToDB(ir);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		log.info("craw " + grade + " 评级 " + gChange + " 评级变动 " + page + "th "
+				+ count + " industryReport end");
+	}
+
+	private void saveToDB(HbIndusReports ir) throws IOException {
+		dao.add(ir);
+	}
+
+	// private void crawIndustryReport(int page, String count, String charSet)
+	// throws URISyntaxException, IOException, ParseException {
+	// log.info("craw " + page + "th " + count + " industryReport begin");
+	//
+	// try {
+	//
+	// uriBuilder = new URIBuilder(seed);
+	//
+	// uriBuilder.setParameter("style", "hyyb");
+	// uriBuilder.setParameter("dt", "y2");
+	// uriBuilder.setParameter("pageSize", count);
+	// uriBuilder.setParameter("page", String.valueOf(page));
+	//
+	// HttpEntity<String> entity = new RestTemplate().getForEntity(
+	// uriBuilder.build(), String.class);
+	//
+	// String html = entity.getBody();
+	// html = html.substring(html.indexOf("[") + 1, html.indexOf("]"));
+	// String[] reports = html.split("\"");
+	// int len = reports.length;
+	// for (int i = 1; i < len - 1; i += 2) {
+	// HbIndusReports ir = new HbIndusReports();
+	// String report = new String(reports[i]);
+	// String[] tmp = report.split(",");
+	// Date date = new SimpleDateFormat("yyyy-MM-dd")
+	// .parse(new String(tmp[4]));
+	// ir.indusName = new String(tmp[1]);
+	// ir.time = date.getTime();
+	//
+	// StringBuilder link = new StringBuilder(preURL);
+	// link.append(new SimpleDateFormat("yyyyMMdd").format(date));
+	// link.append("/hy,");
+	// link.append(new String(tmp[9]));
+	// link.append(sufURL);
+	//
+	// ir.url = link.toString();
+	// ir.orgName = new String(tmp[7]);
+	//
+	// String title = new String(tmp[10]);
+	// try {
+	// title = new String(title.getBytes(GBK), GBK);
+	// } catch (UnsupportedEncodingException e) {
+	// title = "";
+	// }
+	//
+	// ir.title = title;
+	// ir.graChange = Integer.parseInt(new String(tmp[6]));
+	// ir.grade = Integer.parseInt(String.valueOf(getIndexFromArr(
+	// new String(tmp[5]), REPORT_GRADE_ARR)));
+	// ir.orgImpact = Integer.parseInt(new String(tmp[11]));
+	// }
+	// } catch (Exception e) {
+	// throw e;
+	// }
+	// log.info("craw " + page + "th " + count + " industryReport end");
+	// }
+
+	// private int crawReportPages(String pageNum, String url, String charSet) {
+	// int pages = 0;
+	// try {
+	// RestTemplate rest = new RestTemplate();
+	// HttpEntity<String> entity = rest.getForEntity(url, String.class);
+	//
+	// if (entity == null)
+	// throw new NullPointerException("entity is empty");
+	//
+	// String html = entity.getBody();
+	//
+	// if (html == null || html.length() == 0)
+	// throw new NullPointerException("html is empty");
+	//
+	// Document doc = Jsoup.parse(html);
+	// int repNum = Integer
+	// .parseInt(doc.getElementById("list_num").text());
+	// int pageSize = Integer.parseInt(pageNum);
+	// pages = (repNum % pageSize == 0) ? repNum / pageSize : repNum
+	// / pageSize + 1;
+	//
+	// return pages;
+	// } catch (Exception e) {
+	// throw e;
+	// }
+	// }
+
+	private int crawReportPagesByGrade(String pageNum, String url,
+			String charSet, String grade, String gChange) throws Exception {
+		int pages = 0;
+		try {
+			uriBuilder = new URIBuilder(seed);
+
+			uriBuilder.setParameter("style", "hyyb");
+			uriBuilder.setParameter("dt", "y2");
+			uriBuilder.setParameter("tp", grade);
+			uriBuilder.setParameter("cg", gChange);
+
+			SimpleClientHttpRequestFactory clientFactory = new SimpleClientHttpRequestFactory();
+			clientFactory.setConnectTimeout(10000);
+			clientFactory.setReadTimeout(10000);
+
+			RestTemplate rest = new RestTemplate(clientFactory);
+
+			HttpEntity<String> entity = null;
+
+			String html = null;
+
+			int retry = 0;
+
+			while (retry < 10) {
+				try {
+					entity = rest
+							.getForEntity(uriBuilder.build(), String.class);
+					if (entity == null)
+						throw new NullPointerException("entity is empty");
+
+					html = entity.getBody();
+
+					if (html == null || html.length() == 0)
+						throw new NullPointerException("html is empty");
+					
+					break;
+				} catch (Exception e) {
+					log.info("retry : " + retry);
+					retry++;
+				}
+			}
+
+			JsonNode node = mapper.readTree(html.substring(html.indexOf("{")));
+			pages = Integer.parseInt(node.get("pages").toString()
+					.replaceAll("\"", ""));
+
+			return pages;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	private final String preURL = "http://data.eastmoney.com/report/";
+	private final String sufURL = ".html";
+	private final String DEFAULT_PAGESISE = "100";
+	private HTablePool pool;
+	private ObjectMapper mapper;
+	private IndusReportDAO dao;
+
+	public static void main(String[] args) {
+		HbIndusReportService s = new HbIndusReportService();
+		s.start();
+	}
+}

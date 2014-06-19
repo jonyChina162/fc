@@ -1,0 +1,13 @@
+package cn.whu.zl.dao;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.whu.zl.dao.impl.GenericJPADao;
+import cn.whu.zl.entity.NcTable;
+import cn.whu.zl.entity.StockTimePK;
+
+@Repository("nctableDao")
+public class NcTableDao extends GenericJPADao<NcTable, StockTimePK>{
+
+}

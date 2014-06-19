@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="hibernateJPA"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<class>cn.whu.zl.entity.StockIndustry</class>
+		<class>cn.whu.zl.entity.StockIndex</class>
+		<class>cn.whu.zl.entity.IndexTransactionHistory</class>
+		<class>cn.whu.zl.entity.TransactionHistory</class>
+		<class>cn.whu.zl.entity.InstitutionName</class>
+
+		<!-- 下方为hibernate的一些属性设置 -->
+		<properties>
+			<property name="hibernate.connection.url"
+				value="jdbc:mysql://192.168.1.108:3309/finance?useUnicode=true&amp;characterEncoding=UTF-8" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="123456" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<!-- <property name="hibernate.max_fetch_depth" value="3" /> -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- <property name="hibernate.jdbc.fetch_size" value="18" />
+			<property name="hibernate.jdbc.batch_size" value="10" /> -->
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+			<!-- <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" /> -->
+			<!-- c3p0连接池 -->
+			<property name="hibernate.connection.provider_class"
+				value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<!-- 最小连接数 -->
+			<property name="c3p0.min_size" value="5" />
+			<!-- 最大连接数 -->
+			<property name="c3p0.max_size" value="100" />
+			<!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+			<property name="c3p0.maxIdleTime" value="3000" />
+			<!-- 获得连接的超时时间,如果超过这个时间,会抛出异常，单位毫秒 -->
+			<property name="c3p0.timeout" value="5000" />
+			<!-- 最大的PreparedStatement的数量 -->
+			<property name="c3p0.max_statements" value="50" />
+			<!-- 每隔120秒检查连接池里的空闲连接 ，单位是秒 -->
+			<property name="c3p0.idle_test_period" value="120" />
+			<!-- 是否每次都验证连接是否可用 -->
+			<property name="c3p0.validate" value="false" />
+			<!-- 不设置缓存 -->
+			<property name="c3p0.max_statements " value="0" />
+			<property name="c3p0.maxStatementsPerConnection " value="0" />
+			<property name="hibernate.c3p0.acquire_increment" value="10"/>  
+
+		</properties>
+	</persistence-unit>
+</persistence>

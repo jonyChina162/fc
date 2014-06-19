@@ -1,0 +1,164 @@
+/**
+ * 
+ */
+package cn.whu.zl.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Entity
+public class StockReport implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String toString() {
+		return "StockReport [sdtPK=" + sdtPK + ", stockName=" + stockName
+				+ ", grade=" + grade + ", gradeChange=" + gradeChange
+				+ ", orgName=" + orgName + ", preIncomeThis=" + preIncomeThis
+				+ ", prePEratioThis=" + prePEratioThis + ", preIncomeNext="
+				+ preIncomeNext + ", prePEratioNext=" + prePEratioNext
+				+ ", title=" + title + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sdtPK == null) ? 0 : sdtPK.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StockReport other = (StockReport) obj;
+		if (other.hashCode() != this.hashCode())
+			return false;
+		return true;
+	}
+
+	public StockDataTitlePK getSdtPK() {
+		return sdtPK;
+	}
+
+	public void setSdtPK(StockDataTitlePK sdtPK) {
+		this.sdtPK = sdtPK;
+	}
+
+	public String getStockName() {
+		return stockName;
+	}
+
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
+	}
+
+	public byte getGrade() {
+		return grade;
+	}
+
+	public void setGrade(byte grade) {
+		this.grade = grade;
+	}
+
+	public byte getGradeChange() {
+		return gradeChange;
+	}
+
+	public void setGradeChange(byte gradeChange) {
+		this.gradeChange = gradeChange;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public float getPreIncomeThis() {
+		return preIncomeThis;
+	}
+
+	public void setPreIncomeThis(float preIncomeThis) {
+		this.preIncomeThis = preIncomeThis;
+	}
+
+	public float getPrePEratioThis() {
+		return prePEratioThis;
+	}
+
+	public void setPrePEratioThis(float prePEratioThis) {
+		this.prePEratioThis = prePEratioThis;
+	}
+
+	public float getPreIncomeNext() {
+		return preIncomeNext;
+	}
+
+	public void setPreIncomeNext(float preIncomeNext) {
+		this.preIncomeNext = preIncomeNext;
+	}
+
+	public float getPrePEratioNext() {
+		return prePEratioNext;
+	}
+
+	public void setPrePEratioNext(float prePEratioNext) {
+		this.prePEratioNext = prePEratioNext;
+	}
+	
+
+	@EmbeddedId
+	private StockDataTitlePK sdtPK;
+
+	@Column(name = "stockName")
+	private String stockName;
+
+	@Column(name = "grade")
+	private byte grade;
+
+	@Column(name = "gradeChange")
+	private byte gradeChange;
+
+	@Column(name = "orgName")
+	private String orgName;
+
+	@Column(name = "preIncomeThis", scale = 2)
+	private float preIncomeThis;
+
+	@Column(name = "prePEratioThis", scale = 2)
+	private float prePEratioThis;
+
+	@Column(name = "preIncomeNext", scale = 2)
+	private float preIncomeNext;
+
+	@Column(name = "prePEratioNext", scale = 2)
+	private float prePEratioNext;
+
+	@Column(name = "title")
+	private String title;
+	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+}

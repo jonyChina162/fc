@@ -1,0 +1,137 @@
+/**
+ * 
+ */
+package cn.whu.zl.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Entity
+public class FundFlowHistory implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	public FundFlowHistory(){}
+	
+	public FundFlowHistory(StockDataPK sdPK) {
+		super();
+		this.sdPK = sdPK;
+	}
+
+	@Override
+	public String toString() {
+		return "FundFlowHistory [sdPK=" + sdPK + ", fundIn=" + fundIn
+				+ ", fundOut=" + fundOut + ", netIn=" + netIn + ", mainIn="
+				+ mainIn + ", mainOut=" + mainOut + ", mainNetIn=" + mainNetIn
+				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sdPK == null) ? 0 : sdPK.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FundFlowHistory other = (FundFlowHistory) obj;
+		if (sdPK == null) {
+			if (other.sdPK != null)
+				return false;
+		} else if (!sdPK.equals(other.sdPK))
+			return false;
+		return true;
+	}
+
+	public StockDataPK getSdPK() {
+		return sdPK;
+	}
+
+	public void setSdPK(StockDataPK sdPK) {
+		this.sdPK = sdPK;
+	}
+
+	public int getFundIn() {
+		return fundIn;
+	}
+
+	public void setFundIn(int fundIn) {
+		this.fundIn = fundIn;
+	}
+
+	public int getFundOut() {
+		return fundOut;
+	}
+
+	public void setFundOut(int fundOut) {
+		this.fundOut = fundOut;
+	}
+
+	public int getNetIn() {
+		return netIn;
+	}
+
+	public void setNetIn(int netIn) {
+		this.netIn = netIn;
+	}
+
+	public int getMainIn() {
+		return mainIn;
+	}
+
+	public void setMainIn(int mainIn) {
+		this.mainIn = mainIn;
+	}
+
+	public int getMainOut() {
+		return mainOut;
+	}
+
+	public void setMainOut(int mainOut) {
+		this.mainOut = mainOut;
+	}
+
+	public int getMainNetIn() {
+		return mainNetIn;
+	}
+
+	public void setMainNetIn(int mainNetIn) {
+		this.mainNetIn = mainNetIn;
+	}
+
+	@EmbeddedId
+	private StockDataPK sdPK;
+
+	@Column(name = "fundIn")
+	private int fundIn;
+
+	@Column(name = "fundOut")
+	private int fundOut;
+
+	@Column(name = "netIn")
+	private int netIn;
+
+	@Column(name = "mainIn")
+	private int mainIn;
+
+	@Column(name = "mainOut")
+	private int mainOut;
+
+	@Column(name = "mainNetIn")
+	private int mainNetIn;
+
+}

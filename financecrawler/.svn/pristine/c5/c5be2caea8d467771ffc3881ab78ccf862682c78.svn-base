@@ -1,0 +1,276 @@
+/**
+ * 
+ */
+package cn.whu.zl.dao;
+
+import static cn.whu.zl.util.CrawlerUtil.minE0;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import cn.whu.zl.dao.impl.GenericJPADao;
+import cn.whu.zl.entity.StockDataPK;
+import cn.whu.zl.entity.TransactionHistory;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+@Repository("transactionHistoryDao")
+public class TransactionHistoryDao extends
+		GenericJPADao<TransactionHistory, StockDataPK> {
+	@SuppressWarnings("unchecked")
+	public float getCloPrice(String stockID, Date date, String symbol1,
+			String symbol2, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date >= :date order by date";
+		if (!symbol2.toLowerCase().equals("after")) {
+			sql.replaceAll(">=", "<");
+			sql += " desc";
+		}
+
+		Query q = em.createQuery(sql);
+		if (number < 7)
+			number = 7;
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 7) {
+
+			switch (symbol1.toLowerCase()) {
+			case "high":
+				result = Collections.max(list);
+				break;
+			case "low":
+				result = minE0(list);
+				break;
+			}
+		}
+
+		if (list != null && list.size() > 0 && number == 7)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public float getCurCloPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date < :date order by date desc";
+
+		Query q = em.createQuery(sql);
+
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+
+		if (list != null && list.size() > 0) {
+			if (number > list.size())
+				number = list.size();
+			result = list.get(number - 1);
+		}
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Float[] getPre2CloPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date < :date order by date desc";
+
+		Query q = em.createQuery(sql);
+
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		number += 1; // 取前两天的值
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		Float[] result = new Float[] { 0.0F, 0.0F };
+
+		if (list != null && list.size() > 0) {
+			if (number > list.size())
+				number = list.size();
+			result[1] = list.get(number - 1);
+			if (number > 1)
+				result[0] = list.get(number - 2);
+		}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	public float getHighPrice(String stockID, Date date, int number) {
+		String sql = "select cloPrice from TransactionHistory where stockID= :stockID and date >= :date order by date";
+
+		Query q = em.createQuery(sql);
+		if (number < 7)//可能当天是空值，但不可能停牌超过7天，所以取7天的值
+			number = 7;
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 7) {
+			result = Collections.max(list);
+		}
+
+		if (list != null && list.size() > 0 && number == 7)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	public float getLowPrice(String stockID, Date date, int number) {
+		String sql = "select lowPrice from TransactionHistory where stockID= :stockID and date >= :date order by date";
+
+		Query q = em.createQuery(sql);
+		if (number < 7)
+			number = 7;
+		q.setParameter("stockID", stockID);
+
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 7) {
+			result = minE0(list);
+		}
+
+		if (list != null && list.size() > 0 && number == 7)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TransactionHistory> getTranHisList(String stockID, Date date,
+			int number) {
+		Query q = em
+				.createQuery("select ts from TransactionHistory ts where stockID= :stockID and date >= :date and cloPrice!= 0.0 order by date ");
+		q.setParameter("stockID", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(number);// 控制只取number个值
+		List<TransactionHistory> list = q.getResultList();
+		q=null;
+		em.clear();
+		return list;
+	}
+
+	@Deprecated
+	public float getCloPrice(String[] origExcel, String symbol, int number) {
+		Query q = em.createQuery("select cloPrice from TransactionHistory "
+				+ "where stockID='" + origExcel[0] + "' and date >= '"
+				+ origExcel[1] + "'");
+		if (number < 7)
+			number = 7;
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 7) {
+
+			switch (symbol) {
+			case "High":
+				result = Collections.max(list);
+				break;
+			case "Low":
+				result = minE0(list);
+				break;
+			}
+		}
+
+		if (list != null && list.size() > 0 && number == 7)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+		em.clear();
+		return result;
+	}
+
+	@Deprecated
+	public float getPastCloPrice(String[] origExcel, String symbol, int number) {
+		Query q = em.createQuery("select cloPrice from TransactionHistory "
+				+ "where stockID='" + origExcel[0] + "' and date < '"
+				+ origExcel[1] + " order by date desc ");
+		q.setMaxResults(number);// 控制只取number个值
+		List<Float> list = q.getResultList();
+		float result = 0.0f;
+		if (list != null && list.size() > 0 && number != 7) {
+
+			switch (symbol) {
+			case "High":
+				result = Collections.max(list);
+				break;
+			case "Low":
+				result = Collections.min(list);
+				break;
+			}
+		}
+
+		if (list != null && list.size() > 0 && number == 7)
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+		em.clear();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Float getEFAMC(String stockID, Date date) {
+		Query q = em.createQuery("select EFAMC from TransactionHistory "
+				+ "where stockID='" + stockID + "' and date >= '" + date + "'");
+		q.setMaxResults(7);
+		Float result = 0.0f;
+
+		List<Float> list = q.getResultList();
+		if (list != null && list.size() > 0)
+
+			for (int i = 0; i < list.size(); i++)
+				if ((list.get(i) > 1e-10)) {
+					result = list.get(i);
+					break;
+				}
+
+		list = null;
+		q = null;
+		em.clear();
+		return result;
+	}
+
+}

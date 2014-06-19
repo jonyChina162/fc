@@ -1,0 +1,314 @@
+package cn.whu.zl.hbase.service;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
+
+import cn.whu.zl.dao.IndexTransactionHistoryDao;
+import cn.whu.zl.dao.StockIndustryDao;
+import cn.whu.zl.dao.TransactionHistoryDao;
+import cn.whu.zl.hbase.HbaseConf;
+import cn.whu.zl.hbase.dao.IndusReportDAO;
+import cn.whu.zl.hbase.dao.ReportDAO;
+import cn.whu.zl.hbase.model.HbIndusReports;
+import cn.whu.zl.hbase.model.HbReports;
+import cn.whu.zl.service.BasicCrawServiceImp;
+import cn.whu.zl.util.CrawlerUtil;
+import cn.whu.zl.util.ReportInfluenceFomula;
+
+//@Service("recModelSer")
+public class RecModelService extends BasicCrawServiceImp {
+	private static final Logger log = Logger.getLogger(RecModelService.class
+			.getName());
+
+	public RecModelService() {
+		HTablePool pool = new HTablePool(HbaseConf.conf, 1);
+		indusDao = new IndusReportDAO(pool);
+		reDao = new ReportDAO(pool);
+		sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		sdf2 = new SimpleDateFormat("yyyyMMdd");
+	}
+
+	@Override
+	public void start() {
+		try {
+			indusList = stockIndustryDao.getAllIndus();
+			scoreIndus = new HashMap<String, Double>(70);
+			for (String s : indusList)
+				scoreIndus.put(s.trim(), 0.0d);
+
+			stockList = stockIndustryDao.getAllStockID();
+			scoreStock = new HashMap<>(3000);
+			for (String s : stockList)
+				scoreStock.put(s.trim(), 0.0d);
+
+////			int[] pres = { 1, 5, 7, 15, 30 };
+//			int[] pres = {15};
+////			int[] ks = { 1, 5, 7, 10, 20 };
+//			int[] ks = {7};
+//			int[] lasts = { 1, 3, 5, 7, 15 };
+////			int[] lasts = {15};
+//			int basetime = 20130701;
+//			int day = 31;
+////
+//			for (int pre : pres)
+//				for (int k : ks)
+//					for (int last : lasts) {
+//						StringBuilder sb = new StringBuilder(50);
+//						sb.append(basetime);
+//						sb.append("_pre");
+//						sb.append(pre);
+//						sb.append("_top");
+//						sb.append(k);
+//						sb.append("_last");
+//						sb.append(last);
+//						sb.append("_lasttest");
+//						sb.append(day);
+//						String path = sb.toString();
+//						testN(pre, k, last, basetime, day, path);
+//					}
+
+//			 testN(7, 7, 15,20130701,31,"20130701_pre7_top7_last15_31new");
+			 testN(15, 7, 15,20120101,365,"20120101_pre15_top7_last15_365test");
+
+		} catch (Exception e) {
+
+		}
+
+	}
+
+	public void scoreIndByDay(String time, Map<String, Double> scoreIndusDay)
+			throws IOException {
+		List<HbIndusReports> hbirList = indusDao.scanByTime(time);
+		for (HbIndusReports hbir : hbirList) {
+			double ns = scoreIndusDay.get(hbir.indusName)
+					+ ReportInfluenceFomula.score(hbir.grade, hbir.graChange,
+							hbir.orgImpact);
+			scoreIndusDay.put(hbir.indusName, ns);
+		}
+	}
+
+	public void scoreIndByNDay(String time, int N,
+			Map<String, Double> scoreIndus) throws Exception {
+		List<HbIndusReports> hbirList = indusDao.scanByNTime(time, N);
+		for (HbIndusReports hbir : hbirList) {
+			double ns = scoreIndus.get(hbir.indusName)
+					+ ReportInfluenceFomula.score(hbir.grade, hbir.graChange,
+							hbir.orgImpact);
+			scoreIndus.put(hbir.indusName, ns);
+		}
+
+		for (String key : scoreIndus.keySet()) {
+			scoreIndus.put(key, scoreIndus.get(key) / (N + 1));
+		}
+	}
+
+	public void scoreRepByNDay(String time, int N,
+			Map<String, Double> scoreIndus, Map<String, Double> scoreStock)
+			throws Exception {
+
+		List<HbReports> hbrList = reDao.scanByNTime(time, N);
+		for (HbReports hbr : hbrList) {
+			if (scoreStock.containsKey(hbr.stockID.trim())) {
+				double ns = scoreStock.get(hbr.stockID.trim())
+						+ ReportInfluenceFomula.score(hbr.grade, hbr.graChange,
+								hbr.orgImpact);
+				scoreStock.put(hbr.stockID.trim(), ns);
+			}
+
+		}
+
+		for (String key : scoreStock.keySet()) {
+			try {
+				String indusName = stockIndustryDao.get(key).getIndustryName()
+						.trim();
+				double s1 = scoreIndus.get(indusName);
+				double s2 = scoreStock.get(key) / (N + 1);
+				double ns = (s1 + 1) * s2;
+				scoreStock.put(key, ns);
+			} catch (Exception e) {
+				log.error(key);
+				throw e;
+			}
+		}
+	}
+
+	public String[] getTopK(int K, Map<String, Double> scoreStock)
+			throws IOException {
+		// TODO 方法优化
+		int len = scoreStock.size();
+		// Double[] scores = new Double[len];
+		Set<Entry<String, Double>> set = scoreStock.entrySet();
+		// scoreStock.values().toArray(scores);
+		// Arrays.sort(scores);
+		// for(int i = len-1;i>len-N-1;i--){
+		// for()
+		// }
+		TreeSet<Entry<String, Double>> ts = new TreeSet<>(
+				new MyReverseComparator());
+		ts.addAll(set);
+
+		Iterator<Entry<String, Double>> it = ts.iterator();
+		int count = 0;
+		String[] topList = new String[K];
+		while (it.hasNext() && count < K) {
+			Entry<String, Double> nt = it.next();
+			// System.out.println(nt.toString());
+			topList[count] = nt.getKey();
+			count++;
+		}
+
+		return topList;
+	}
+
+	public float[] testN(String time, int N, int K, int last) {
+		float[] profitArr = null;
+		try {
+			scoreIndByNDay(time, N, scoreIndus);
+			scoreRepByNDay(time, N, scoreIndus, scoreStock);
+			String[] stockArr = getTopK(K, scoreStock);
+			profitArr = countProfit(time, last, stockArr);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+		}
+
+		return profitArr;
+	}
+
+	public void testN(int N, int K, int last, int base, int day, String basePath) {
+		float[][] profits = new float[day][K + 1];
+		for (int i = 0; i < day; i++) {
+			log.info("第 " + i + " 次计算");
+			String time = String.valueOf(base + i);
+			profits[i] = testN(time, N, K, last);
+		}
+		proToExcel(base, basePath, profits);
+	}
+
+	public void proToExcel(int base, String path, float[][] profits) {
+		try {
+			path = System.getProperty("user.dir") + "/src/main/resources/data/"
+					+ path + ".xls";
+			log.info("写入excel表 " + path + " 开始");
+			File f = new File(path);
+			if (!f.exists())
+				f.createNewFile();
+
+			FileOutputStream out = new FileOutputStream(f);
+
+			HSSFWorkbook wb = new HSSFWorkbook();
+
+			int rowNum = profits.length;
+			int colNum = 3;
+
+			HSSFSheet sheet = wb.createSheet();
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdf2.parse(String.valueOf(base)));
+			for (int i = 0; i < rowNum; i++) {
+				float[] profit = profits[i];
+				int l = profit.length;
+				HSSFRow row = sheet.createRow(i);
+				HSSFCell[] cell = new HSSFCell[colNum];
+				for (int j = 0; j < colNum; j++)
+					cell[j] = row.createCell(j);
+				cell[0].setCellValue(sdf2.format(c.getTime()));
+				cell[1].setCellValue(CrawlerUtil.MeanArr(0, l - 1, profit));
+				cell[2].setCellValue(profit[l - 1]);
+				c.add(Calendar.DAY_OF_YEAR, 1);
+			}
+
+			wb.write(out);
+			out.close();
+
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	public float[] countProfit(String time, int day, String[] topList)
+			throws IOException, ParseException {
+		int len = topList.length;
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf2.parse(time));
+		c.add(Calendar.DAY_OF_YEAR, 1);
+		Date start = c.getTime();
+		c.add(Calendar.DAY_OF_YEAR, day - 1);
+		Date end = c.getTime();
+		float[] profit = new float[len + 1];
+		for (int i = 0; i < len; i++) {
+			List<Float> scoreList = transactionHistoryDao.getRatioByDate(start,
+					day, topList[i]);
+			for (Float f : scoreList) {
+				profit[i] += f.floatValue();
+			}
+		}
+
+		List<Float> scoreList = indexTransactionHistoryDao.getRationByDate(
+				start, day);
+		for (float f : scoreList) {
+			profit[len] += f;
+		}
+
+		// System.out.println(Arrays.toString(profit));
+
+		return profit;
+	}
+
+	private IndusReportDAO indusDao;
+	private ReportDAO reDao;
+	private final SimpleDateFormat sdf1;
+	private final SimpleDateFormat sdf2;
+	@Autowired
+	private StockIndustryDao stockIndustryDao;
+	@Autowired
+	private IndexTransactionHistoryDao indexTransactionHistoryDao;
+	@Autowired
+	private TransactionHistoryDao transactionHistoryDao;
+	private List<String> indusList;
+	private List<String> stockList;
+	private Map<String, Double> scoreIndus;
+	private Map<String, Double> scoreStock;
+
+	public static void main(String[] args) {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"spring-jpa.xml");
+		RecModelService rms = (RecModelService) context.getBean("recModelSer");
+		rms.start();
+
+	}
+
+	private class MyReverseComparator implements
+			Comparator<java.util.Map.Entry<String, Double>> {
+
+		@Override
+		public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
+			return o2.getValue().compareTo(o1.getValue());
+		}
+
+	}
+}

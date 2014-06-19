@@ -1,0 +1,42 @@
+package cn.whu.zl.dao;
+
+import static cn.whu.zl.util.CrawlerUtil.sumList;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import cn.whu.zl.dao.impl.GenericJPADao;
+import cn.whu.zl.entity.FundFlowHistory;
+import cn.whu.zl.entity.StockDataPK;
+
+@Repository("fundFlowHistoryDao")
+public class FundFlowHistoryDao extends GenericJPADao<FundFlowHistory, StockDataPK> {
+	@SuppressWarnings("unchecked")
+	public int getSumNetInDays(String stockID,Date date,int days){
+		Query q = em.createQuery("select netIn from FundFlowHistory ts where stockID= :stockID and date < :date and netIn != 0.0 order by date desc ");
+		q.setParameter("stockID", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(days);
+//		List<Integer> ll = q.getResultList();
+		List<Integer> list = q.getResultList();
+		q=null;
+		em.clear();
+		return sumList(list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public int getSumMainNetInDays(String stockID,Date date,int days){
+		Query q = em.createQuery("select mainNetIn from FundFlowHistory ts where stockID= :stockID and date < :date and mainNetIn != 0.0 order by date desc ");
+		q.setParameter("stockID", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(days);
+		List<Integer> list = q.getResultList();
+		q=null;
+		em.clear();
+		return sumList(list);
+	}
+}

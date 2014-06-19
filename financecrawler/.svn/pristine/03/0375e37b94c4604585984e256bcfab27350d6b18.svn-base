@@ -1,0 +1,115 @@
+package cn.whu.zl.dao;
+
+import static cn.whu.zl.util.CrawlerUtil.sumList;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import cn.whu.zl.dao.impl.GenericJPADao;
+import cn.whu.zl.entity.FundFlowHistory;
+import cn.whu.zl.entity.StockDataPK;
+import cn.whu.zl.entity.TransactionHistory;
+
+@Repository("fundFlowHistoryDao")
+public class FundFlowHistoryDao extends GenericJPADao<FundFlowHistory, StockDataPK> {
+	@SuppressWarnings("unchecked")
+	public int getSumNetInDays(String stockID,Date date,int days){
+		Query q = em.createQuery("select netIn from FundFlowHistory ts where stockID= :stockID and date < :date and netIn != 0.0 order by date desc ");
+		q.setParameter("stockID", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(days);
+//		List<Integer> ll = q.getResultList();
+		List<Integer> list = q.getResultList();
+		q=null;
+		em.clear();
+		return sumList(list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public int getSumMainNetInDays(String stockID,Date date,int days){
+		Query q = em.createQuery("select mainNetIn from FundFlowHistory ts where stockID= :stockID and date < :date and mainNetIn != 0.0 order by date desc ");
+		q.setParameter("stockID", stockID);
+		q.setParameter("date", date);
+		q.setMaxResults(days);
+		List<Integer> list = q.getResultList();
+		q=null;
+		em.clear();
+		return sumList(list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FundFlowHistory> getOneStockAllFund(String stockID){
+		Query q = em.createQuery("select ffh from FundFlowHistory ffh where stockID=:stockID");
+		q.setParameter("stockID", stockID);
+		List<FundFlowHistory> list = q.getResultList();
+		em.clear();
+		return list;
+	}
+	
+	public List<Float> getMFI(String stockID,Date date){
+		List<Float> results = new ArrayList<Float>();
+		results.add(getALLMFI1(stockID,date));
+		results.add(getALLMFI7(stockID,date));
+		results.add(getMainMFI1(stockID,date));
+		results.add(getMainMFI7(stockID,date));
+		
+		return results;
+	}
+	
+	public float getALLMFI1(String stockID,Date date){
+		Query q = em.createQuery("select AllMFI1 from "
+				+ "FundFlowHistory where stockID = :stockid and date = :date");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		if(q.getResultList().size() == 0){
+			return 0f;
+		}
+		return (float)q.getResultList().get(0);
+	}
+	
+	public float getALLMFI7(String stockID,Date date){
+		Query q = em.createQuery("select AllMFI7 from "
+				+ "FundFlowHistory where stockID = :stockid and date = :date");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		if(q.getResultList().size() == 0){
+			return 0f;
+		}
+		return (float)q.getResultList().get(0);
+	}
+	
+	public float getMainMFI1(String stockID,Date date){
+		Query q = em.createQuery("select MainMFI1 from "
+				+ "FundFlowHistory where stockID = :stockid and date = :date");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		if(q.getResultList().size() == 0){
+			return 0f;
+		}
+		return (float)q.getResultList().get(0);
+	}
+	
+	public float getMainMFI7(String stockID,Date date){
+		Query q = em.createQuery("select MainMFI7 from "
+				+ "FundFlowHistory where stockID = :stockid and date = :date");
+		q.setParameter("stockid", stockID);
+		q.setParameter("date", date);
+		if(q.getResultList().size() == 0){
+			return 0f;
+		}
+		return (float)q.getResultList().get(0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FundFlowHistory> getAllByDate(Date e){
+		Query q = em.createQuery("select fh from fundFlowHistory fh where date =:date");
+		q.setParameter("date", e);
+		List<FundFlowHistory> rs = q.getResultList();
+		return rs;
+	}
+}

@@ -1,0 +1,408 @@
+package cn.whu.zl.service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.whu.zl.dao.FundFlowHistoryDao;
+import cn.whu.zl.dao.IndexTransactionHistoryDao;
+import cn.whu.zl.dao.StockIndustryDao;
+import cn.whu.zl.dao.TransactionHistoryDao;
+import cn.whu.zl.entity.FundFlowHistory;
+import cn.whu.zl.entity.TransactionHistory;
+
+@Service("calculateIndicatorSer")
+@Transactional
+public class CalculateIndicatorService extends BasicCrawServiceImp {
+
+	private static final Logger log = Logger
+			.getLogger(FinancialReportService.class.getName());
+
+	@Autowired
+	private TransactionHistoryDao transactionHistoryDao;
+
+	@Autowired
+	private IndexTransactionHistoryDao indexTransactionHistoryDao;
+
+	@Autowired
+	private StockIndustryDao stockIndustryDao;
+
+	@Autowired
+	private FundFlowHistoryDao fundFlowHistoryDao;
+
+	private List<String> allStock;
+
+	public void start() {
+		log.debug("calculate indicators begin");
+		allStock = stockIndustryDao.getAllStockID();
+		calculate();
+		log.debug("calculate indicators end");
+	}
+
+	private void calculate() {
+		//for(int i = 1200;i < allStock.size();i++){
+		//for (int i = 0; i < 1200; i++) {
+			//log.info("stockID = "+ allStock.get(i) + "begin");
+
+		/*	List<TransactionHistory> stockTransaction = transactionHistoryDao
+					.getOneStockAllTranHisList(allStock.get(i));*/
+			/*List<FundFlowHistory> stockFund = fundFlowHistoryDao
+					.getOneStockAllFund(allStock.get(i));*/
+
+			List<TransactionHistory> stockTransaction = transactionHistoryDao
+			 .getOneStockAllTranHisList("000001");
+			
+			/*List<FundFlowHistory> stockFund = fundFlowHistoryDao
+					.getOneStockAllFund("000001");*/
+			
+			/*log.info("mfi begin");
+			float[] allmfi1 = CalMFI(stockFund, "all", 1);
+			float[] allmfi7 = CalMFI(stockFund, "all", 7);
+			float[] mainmfi1 = CalMFI(stockFund, "main", 1);
+			float[] mainmfi7 = CalMFI(stockFund, "main", 7);
+			log.info("mfi end");
+			
+			log.info("mfi save");
+			for(int m = 0;m < stockFund.size();m++){
+				stockFund.get(m).setAllMFI1(allmfi1[m]);
+				stockFund.get(m).setAllMFI7(allmfi7[m]);
+				stockFund.get(m).setMainMFI1(mainmfi1[m]);
+				stockFund.get(m).setMainMFI7(mainmfi7[m]);
+				fundFlowHistoryDao.update(stockFund.get(m));
+			}
+			fundFlowHistoryDao.flush();
+			log.info("mfi saved");*/
+			
+			log.info("rsi begin");
+			float[] RSI6 = CalRSI(stockTransaction,6);
+			float[] RSI12 = CalRSI(stockTransaction, 12);
+			float[] RSI24 = CalRSI(stockTransaction, 24);
+			log.info("atr begin");
+			float[] ATR7 = CalATR(stockTransaction, 7);
+			float[] ATR14 = CalATR(stockTransaction, 14);
+			log.info("macd  begin");
+			float[] MACD = CalMACD(stockTransaction);
+			log.info("trade  begin");
+			int[] trade = CalTrade(MACD);
+			int[] iftrade1 = CalIfTrade(trade,1);
+			int[] iftrade_1 = CalIfTrade(trade,-1);
+			
+			log.info("st save");
+			for(int n = 0;n < stockTransaction.size();n++){
+				
+				//transactionHistoryDao.updateIndicator(RSI6[n],RSI12[n],RSI24[n], ATR7[n], ATR14[n], MACD[n], trade[n],iftrade[n], stockTransaction.get(n).getSdPK());
+				/*stockTransaction.get(n).setRSI(RSI[n]);
+				stockTransaction.get(n).setATR7(ATR7[n]);
+				stockTransaction.get(n).setATR14(ATR14[n]);
+				stockTransaction.get(n).setMACD(MACD[n]);
+				stockTransaction.get(n).setTrade(trade[n]);
+				transactionHistoryDao.update(stockTransaction.get(n));*/
+			}
+			transactionHistoryDao.flush();
+			log.info("st saved");
+
+		//}
+
+	}
+
+	static private float[] CalMFI(List<FundFlowHistory> stockFund,
+			String AllOrMain, int day) {
+
+		log.debug("calculate " + AllOrMain + "_MFI_" + day + "begin");
+
+		int[] pn = { 0, 0 };
+		int number = 0;
+		float[] mfi = new float[stockFund.size()];
+		Queue<Integer> qIn = new LinkedList<Integer>();
+		Queue<Integer> qOut = new LinkedList<Integer>();
+
+		for (int i = 0; i < stockFund.size(); i++) {
+
+			if (number < day - 1) {
+				AddFund(qIn, qOut, stockFund.get(i), AllOrMain, pn);
+				number++;
+			}
+
+			if (number >= day - 1 && number < stockFund.size()) {
+				if (day == 1 && qIn.size() != 0) {
+					pn[0] -= qIn.poll();
+					pn[1] -= qOut.poll();
+				}
+
+				if (day == 7 && number != 6) {
+					pn[0] -= qIn.poll();
+					pn[1] -= qOut.poll();
+				}
+
+				if (day == 15 && number !=14){
+					pn[0] -= qIn.poll();
+					pn[1] -= qOut.poll();
+				}
+				
+				AddFund(qIn, qOut, stockFund.get(number), AllOrMain, pn);
+				
+				//in case the divisor is 0 
+				if((pn[0]+pn[1]) > -(1e-10) && (pn[0]+pn[1]) < 1e-10)
+					mfi[number] = 0;
+				else
+					mfi[number] = 100 * ((float) pn[0] / (float) (pn[0] + pn[1]));
+				
+				number++;
+			}
+		}
+
+		//log.info(AllOrMain + "_MFI_" + day + ":" + Arrays.toString(mfi));
+
+		log.debug("calculate " + AllOrMain + "_MFI_" + day + "end");
+		return mfi;
+	}
+
+	static private void AddFund(Queue<Integer> qIn, Queue<Integer> qOut,
+			FundFlowHistory ffh, String AllOrMain, int[] pn) {
+
+		switch (AllOrMain) {
+		case "all": {
+			qIn.offer(ffh.getFundIn());
+			qOut.offer(ffh.getFundOut());
+			pn[0] += ffh.getFundIn();
+			pn[1] += ffh.getFundOut();
+			break;
+		}
+		case "main": {
+			qIn.offer(ffh.getMainIn());
+			qOut.offer(ffh.getMainOut());
+			pn[0] += ffh.getFundIn();
+			pn[1] += ffh.getFundOut();
+			break;
+		}
+		}
+
+	}
+
+	static private float[] CalRSI(List<TransactionHistory> stockTransaction,int day) {
+		log.debug("calculate RSI begin");
+
+		float[] rsi = new float[stockTransaction.size()];
+		float AG = 0f;
+		float AL = 0f;
+		float RS = 0f;
+		float[] GL = new float[2];
+
+		for (int i = 1; i < stockTransaction.size(); i++) {
+
+			TransactionHistory temp = stockTransaction.get(i);
+
+			if (i < day+1) {
+				rsi[i] = 0f;
+				GL = CalGL(temp, GL);
+				if (i == day) {
+					if (GL[1] > -(1e-10) && GL[1] < 1e-10)
+						rsi[i] = 100;
+					else {
+						AG = GL[0] / day;
+						AL = GL[1] / day;
+						RS = GL[0] / GL[1];
+						rsi[i] = 100f - (100f / (1 + RS));
+					}
+				}
+			}
+
+			if (i >= day+1) {
+				GL[0] = AG * (day-1);
+				GL[1] = AL * (day-1);
+				GL = CalGL(temp, GL);
+				if (GL[1] > -(1e-10) && GL[1] < 1e-10)
+					rsi[i] = 100;
+				else {
+					AG = GL[0] / day;
+					AL = GL[1] / day;
+					RS = GL[0] / GL[1];
+					rsi[i] = 100f - (100f / (1 + RS));
+				}
+			}
+
+		}
+		//log.info("RSI:"+Arrays.toString(rsi));
+		log.debug("calculate RSI end");
+		
+		return rsi;
+	}
+
+	static private float[] CalGL(TransactionHistory temp, float[] gl) {
+
+		if (temp.getChangeAmount() > 1e-10)
+			gl[0] += Math.abs(temp.getChangeAmount());
+		else
+			gl[1] += Math.abs(temp.getChangeAmount());
+
+		return gl;
+	}
+
+	static private float[] CalATR(List<TransactionHistory> stockTransaction,
+			int day) {
+		log.debug("calculate ATR" + day + "begin");
+
+		float lastClose = stockTransaction.get(0).getCloPrice();
+		float TR = 0f;
+		float[] ATR = new float[stockTransaction.size()];
+		TransactionHistory temp = null;
+
+		for (int i = 1; i < stockTransaction.size(); i++) {
+
+			temp = stockTransaction.get(i);
+			if (i <= day) {
+				ATR[i] = 0f;
+				TR += Math.max(temp.getHighPrice(), lastClose)
+						- Math.min(temp.getLowPrice(), lastClose);
+				lastClose = temp.getCloPrice();
+				ATR[day] = TR / day;
+			}
+
+			if (i > day) {
+				TR = Math.max(temp.getHighPrice(), lastClose)
+						- Math.min(temp.getLowPrice(), lastClose);
+				ATR[i] = (ATR[i - 1] * (day - 1) + TR) / day;
+			}
+		}
+
+		//log.info("ATR" + day + ":" + Arrays.toString(ATR));
+		log.debug("calculate ATR" + day + "end");
+		return ATR;
+
+	}
+
+	static private float[] CalMACD(List<TransactionHistory> stockTransaction) {
+		log.debug("calculate MACD begin");
+
+		int total = stockTransaction.size();
+		float[] cloPriceList = new float[total];
+		float[] day12EMA = new float[total];
+		float[] day26EMA = new float[total];
+		float[] difference = new float[total];
+		float[] signal = new float[total];
+		float[] MACD = new float[total];
+
+		for (int i = 0; i < total; i++) {
+			cloPriceList[i] = stockTransaction.get(i).getCloPrice();
+		}
+
+		day12EMA = CalEMA(cloPriceList, 12);
+		day26EMA = CalEMA(cloPriceList, 26);
+
+		for (int i = 0; i < total; i++) {
+			if (day26EMA[i] > -(1e-10) && day26EMA[i] < 1e-10 )
+				difference[i] = 0f;
+			else
+				difference[i] = day12EMA[i] - day26EMA[i];
+		}
+
+		signal = CalEMA(difference, 9);
+		
+		for (int i = 0; i < total; i++) {
+			
+			if (signal[i] > -(1e-10) && signal[i] < 1e-10)
+				MACD[i] = 0f;
+			else
+				MACD[i] = difference[i] - signal[i];
+		}
+
+		/*
+		 * log.info("day12EMA:" + Arrays.toString(day12EMA));
+		 * log.info("day26EMA:" + Arrays.toString(day26EMA));
+		 * log.info("difference:" + Arrays.toString(difference));
+		 * log.info("signal:" + Arrays.toString(signal)); log.info("MACD:" +
+		 * Arrays.toString(MACD));
+		 */
+		
+		//log.info("MACD:"+Arrays.toString(MACD));
+		log.debug("calculate MACD end");
+		return MACD;
+	}
+
+	// 计算是否应该发出trade，从负跳正为买入1，从正跳负为卖出-1，其余为0
+	static private int[] CalTrade(float[] MACD) {
+
+		log.debug("calculate trade begin");
+
+		int[] trade = new int[MACD.length];
+		float temp = MACD[0];
+		for (int i = 1; i < MACD.length; i++) {
+			if (temp > -(1e-10) && temp < 1e-10) {
+				trade[i] = 0;
+			} else if (temp < -(1e-10) && MACD[i] > 1e-10) {
+				trade[i] = 1;
+			} else if (temp > 1e-10 && MACD[i] < -(1e-10)) {
+				trade[i] = -1;
+			} else
+				trade[i] = 0;
+
+			temp = MACD[i];
+		}
+
+		//log.info("Trade : " + Arrays.toString(trade));
+		log.debug("calculate trade end");
+
+		return trade;
+	}
+
+	// 计算过去5天是否发出trade=1信号
+	static public int[] CalIfTrade(int[] trade,int symbol) {
+		int len = trade.length;
+		int[] ifTrade = new int[len];
+		for (int i = 0; i < len; i++) {
+			if (trade[i] == symbol) {
+				int temp = 5;
+				for (int j = 0; j < 5 && (j+i) < len; j++) {
+					ifTrade[j + i] = symbol;
+					if (trade[j + i] == symbol)
+						temp = j;
+				}
+				i += temp;
+				continue;
+			}
+		}
+		return ifTrade;
+
+	}
+
+	//day12EMA出现0值的原因是cloPrice有0值，之前判断时没有 i <= number，所以遇到0值就把EMA置为0，number也自增，结果错误
+	//现在是0值也直接按公式参与计算，需要询问cloprice的0值是跳过还是怎么处理
+	//day12EMA和day26EMA无零值的话，difference不会有0值，后面的signal也不会在中途出现0值
+	static private float[] CalEMA(float[] list, int day) {
+
+		float[] EMA = new float[list.length];
+		float SMA = 0f;
+		float multiplier = (float) 2 / (day + 1);
+		int number = 0;
+
+		for (int i = 0; i < list.length; i++) {
+			if (list[i] < (1e-10) && list[i] > -(1e-10) && i <= number) {
+				EMA[i] = 0;
+				number++;
+				continue;
+			}
+			if (i < day - 1  + number) {
+				EMA[i] = 0f;
+				SMA += list[i];
+			}
+			if (i >= day - 1  + number) {
+				if (i == day - 1 + number){
+					SMA += list[i];
+					EMA[i] = SMA / day;
+				}else
+					EMA[i] = (list[i] - EMA[i - 1]) * multiplier + EMA[i - 1];
+			}
+		}
+
+		//log.info("EMA : " + Arrays.toString(EMA));
+		return EMA;
+
+	}
+}

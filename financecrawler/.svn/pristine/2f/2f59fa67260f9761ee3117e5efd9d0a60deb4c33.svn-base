@@ -1,0 +1,176 @@
+/**
+ * 
+ */
+package cn.whu.zl.service;
+
+import java.util.List;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.params.CoreProtocolPNames;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.whu.zl.dao.StockIndustryDao;
+import cn.whu.zl.dao.TransactionHistoryDao;
+import cn.whu.zl.util.CrawlerUtil;
+
+/**
+ * @author B506-13-1
+ * 
+ */
+/**
+ * @author Administrator
+ *
+ */
+public class BasicCrawServiceImp implements CrawService {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see cn.whu.zl.service.CrawService#start()
+	 */
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see cn.whu.zl.service.CrawService#close()
+	 */
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCodeList(List<String> codeList) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public List<String> getCodeList() {
+		if (null == codeList || codeList.size() == 0)
+			codeList = stockIndustryDao.getAllStockID();
+		return codeList;
+	}
+	
+	@Override
+	public String getMinCode() {
+		return minCode;
+	}
+
+	@Override
+	public void setMinCode(String minCode) {
+		this.minCode = minCode;
+	}
+
+	@Override
+	public String getMaxCode() {
+		return maxCode;
+	}
+
+	@Override
+	public void setMaxCode(String maxCode) {
+		this.maxCode = maxCode;
+	}
+
+	protected void initiaHttpClient() {
+		initiaHttpClient(CrawlerUtil.GBK);
+	}
+
+	protected void initiaHttpClient(String charSet) {
+		client = new DefaultHttpClient();
+		((DefaultHttpClient) client)
+				.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler());
+		((DefaultHttpClient) client).getParams().setParameter(
+				CoreProtocolPNames.HTTP_CONTENT_CHARSET, charSet);
+	}
+
+	/*
+	 * protected void initiaGetMethod(String seed){
+	 * initiaGetMethod(seed,CrawlerUtil.GBK); }
+	 * 
+	 * protected void initiaGetMethod(String seed,String charSet) { method = new
+	 * GetMethod(seed);
+	 * method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new
+	 * DefaultHttpMethodRetryHandler());
+	 * method.getParams().setContentCharset(charSet); }
+	 * 
+	 * protected void initiaPostAttach(String seed){ initiaPostAttach(seed,
+	 * CrawlerUtil.GBK); }
+	 * 
+	 * protected void initiaPostAttach(String seed,String charSet) { method =
+	 * new PostMethod(seed);
+	 * method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new
+	 * DefaultHttpMethodRetryHandler());
+	 * method.getParams().setContentCharset(charSet);
+	 * method.setRequestHeader("Content-Type", "application/octet-stream"); }
+	 */
+
+	/**
+	 * public NameValuePair[] getParams() { return params; }
+	 * 
+	 * public void setParam(String name, String value) { Integer index; if
+	 * (paramsIndex.containsKey(name)) if (null != (index =
+	 * paramsIndex.get(name))) { params[index] = new BasicNameValuePair(name,
+	 * value); } else { updateParams(name, value); } else { updateParams(name,
+	 * value); } }
+	 */
+
+	public String getSeed() {
+		return seed;
+	}
+
+	public void setSeed(String seed) {
+		this.seed = seed;
+	}
+
+	/*
+	 * public void setParams(NameValuePair[] params) { this.params = params;
+	 * paramFlag = params.length; }
+	 *//**
+	 * Description 根据参数名更新参数
+	 * 
+	 * @param name
+	 * @param value
+	 */
+	/*
+	 * private void updateParams(String name, String value) { int index =
+	 * ++paramFlag; paramsIndex.put(name, index); params = Arrays.copyOf(params,
+	 * index); params[index - 1] = new BasicNameValuePair(name, value); }
+	 * 
+	 * public int getParamFlag() { return paramFlag; }
+	 * 
+	 * public void setParamFlag(int paramFlag) { this.paramFlag = paramFlag; }
+	 * 
+	 * public Map<String, Integer> getParamsIndex() { return paramsIndex; }
+	 * 
+	 * public void setParamsIndex(Map<String, Integer> paramsIndex) {
+	 * this.paramsIndex = paramsIndex; }
+	 */
+
+	protected String seed; // 初始url
+	protected HttpClient client; // httpclient实例
+	protected URIBuilder uriBuilder; // URI 构建器
+	/*
+	 * protected NameValuePair[] params; // 请求参数数组，name-参数名称，value-参数值 protected
+	 * Map<String, Integer> paramsIndex; // 请求参数索引，key-参数名称,value-参数在params的索引
+	 * protected int paramFlag = -1; // 请求参数不为空的个数
+	 */
+	private String minCode = "000000";
+	private String maxCode = "9999999";
+	protected List<String> codeList = null;
+	@Autowired
+	private StockIndustryDao stockIndustryDao;
+}

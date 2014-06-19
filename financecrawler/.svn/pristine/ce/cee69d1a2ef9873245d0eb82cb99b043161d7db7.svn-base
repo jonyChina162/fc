@@ -1,0 +1,105 @@
+package cn.whu.zl.util;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+public class CrawlerUtil {
+	public static void changeCharset(String str, String nCharset)
+			throws UnsupportedEncodingException {
+		changeCharset(str, ISO_8859_1, nCharset);
+	}
+
+	public static void changeCharset(String str, String oCharset,
+			String nCharset) throws UnsupportedEncodingException {
+		str = new String(str.getBytes(oCharset), nCharset);
+	}
+
+	public static float strToFloat(String s) {
+		if (null == s || s.length() == 0)
+			return 0.0f;
+		if (s.matches("[-\\s]+"))
+			return 0.0f;
+		else
+			return Float.parseFloat(new String(s));
+	}
+
+	public static long strToLong(String s) {
+		if (null == s || s.length() == 0)
+			return 0l;
+		if (s.matches("[-\\s]+"))
+			return 0l;
+		else
+			return Long.parseLong(new String(s));
+	}
+
+	public static int strToInt(String s) {
+		if (null == s || s.length() == 0)
+			return 0;
+		if (s.matches("[-\\s]+"))
+			return 0;
+		else
+			return Integer.parseInt(new String(s));
+	}
+
+	public static int getIndexFromArr(String str, String[] strArr) {
+		int index = -1;
+		if (null == str || str.length() != 0)
+			for (int i = 0; i < strArr.length; i++)
+				if (str.equals(strArr[i])) {
+					index = i;
+					break;
+				}
+		return index;
+	}
+	
+	public static int sumList(List<Integer> list){
+		int result = 0;
+		for(int f : list)
+			result += f;
+		return result;
+	}
+	
+	public static float minE0(List<Float> list){
+		float min = Float.MAX_VALUE;
+		for(float f : list)
+			if((f - 0.0f) > 1e-10 && (f - min) < 1e-10 )
+				min = f;
+		return min;
+	}
+	
+	public static String[] getMarket(String stockID) {
+		String[] market = null;
+		String symbol = stockID.substring(0, 3);
+		switch (symbol) {
+
+		case "002":
+			market = new String[]{"中小板","399005"};
+			break;
+		case "300":
+			market = new String[]{"创业板","399006"};
+			break;
+		case "000":
+			market = new String[]{"深市A股","000300"};
+			break;
+		case "600":
+			market = new String[]{"沪市A股","000300"};
+			break;
+		case "601":
+			market = new String[]{"沪市A股","000300"};
+			break;
+		case "603":
+			market = new String[]{"上市A股","000300"};
+			break;
+		default:
+			market = new String[]{"未知","000300"};
+			break;
+
+		}
+		return market;
+	}
+
+	public static final String UTF_8 = "utf-8";
+	public static final String GBK = "gbk";
+	public static final String US_ASCII = "US-ASCII";
+	public static final String ISO_8859_1 = "ISO-8859-1";
+}
